@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans | ORITM</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-rgb: 0, 0, 0;
+            --bg: #000000;
+            --text: #f1f3f4;
+            --text-muted: #bdc1c6;
+            --primary: #8ab4f8;
+            --border: #3c4043;
+            --surface: #202124;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            padding-top: 120px;
+        }
+
+        /* --- Custom Navigation (Shared) --- */
+        nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(var(--bg-rgb), 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            z-index: 2000;
+            width: fit-content;
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 100px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chevron {
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            transform: rotate(45deg) translateY(-2px);
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .nav-dropdown:hover .chevron {
+            transform: rotate(225deg) translateY(0px);
+            opacity: 1;
+        }
+
+        .nav-item:hover {
+            background: var(--surface);
+        }
+
+        .nav-item.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            min-width: 280px;
+            background: rgba(var(--bg-rgb), 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            display: grid;
+            gap: 8px;
+            z-index: 3000;
+        }
+
+        .nav-dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.85rem;
+            transition: 0.2s;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: var(--surface);
+        }
+
+        .dropdown-item span {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-item small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* --- Pricing Specific Styles --- */
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 0 24px;
+        }
+
+        .pricing-header h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin-bottom: 16px;
+        }
+
+        .pricing-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 24px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-8px);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            background: rgba(66, 133, 244, 0.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tier-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .price-wrapper {
+            margin: 24px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .price-sub {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .tier-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 48px;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .features-list li i {
+            color: var(--primary);
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 100px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .btn-solid {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn-solid:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: var(--surface);
+        }
+
+        .tag-small {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        /* --- Talk to Sales Section --- */
+        .sales-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 80px 24px;
+            align-items: center;
+        }
+
+        .sales-content h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .sales-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .btn-try {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #e2e8e4;
+            color: #2d3436;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid #d1d8d4;
+            transition: var(--transition);
+        }
+
+        .btn-try:hover {
+            background: #d1d8d4;
+        }
+
+        .sales-form-container {
+            background: #f8f9fa;
+            border-radius: 24px;
+            padding: 40px;
+            color: #1a1a1a;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #e1e4e8;
+            background: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: #3d4638;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #2d3428;
+            transform: scale(0.99);
+        }
+
+        @media (max-width: 992px) {
+            .sales-section {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                text-align: center;
+            }
+
+            .sales-content p {
+                margin: 0 auto 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="website.html" class="nav-item">Home</a>
+
+        <div class="nav-dropdown">
+            <a href="website.html#features" class="nav-item">Features <span class="chevron"></span></a>
+            <div class="dropdown-content">
+                <a href="website.html#gateway" class="dropdown-item">
+                    <span>Agentic Gateway</span>
+                    <small>Distributed orchestration for scale.</small>
+                </a>
+                <a href="website.html#vision" class="dropdown-item">
+                    <span>Synthetic Vision</span>
+                    <small>High-fidelity handwriting OCR.</small>
+                </a>
+                <a href="website.html#consensus" class="dropdown-item">
+                    <span>Consensus Engine</span>
+                    <small>Multi-agent verification logic.</small>
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-dropdown">
+            <a href="website.html#usecases" class="nav-item">Use Cases <span class="chevron"></span></a>
+            <div class="dropdown-content">
+                <a href="website.html#state-exams" class="dropdown-item">
+                    <span>State Examinations</span>
+                    <small>Scale huge batches with 0% error.</small>
+                </a>
+                <a href="website.html#corporate" class="dropdown-item">
+                    <span>Corporate Training</span>
+                    <small>Automate internal skill assessment.</small>
+                </a>
+                <a href="website.html#language" class="dropdown-item">
+                    <span>Language Learning</span>
+                    <small>Analyze complex script handwriting.</small>
+                </a>
+            </div>
+        </div>
+
+        <a href="pricing.html" class="nav-item active">Pricing</a>
+    </nav>
+
+    <header class="pricing-header">
+        <span class="tag-small"># SCALABLE_SUBSCRIPTIONS</span>
+        <h1>Pricing Plans.</h1>
+        <p>Predictable USD pricing for <b>Institutions & Universities</b></p>
+    </header>
+
+    <div class="pricing-grid">
+        <!-- Starter Card -->
+        <div class="pricing-card">
+            <div class="tier-title">Starter</div>
+            <div class="price-wrapper">
+                <span class="price">$1.99</span>
+                <span class="price-sub">/paper</span>
+            </div>
+            <p class="tier-desc">Basic automation for classrooms and small teaching groups.</p>
+            <ul class="features-list">
+                <li><i class="fas fa-bolt"></i> Fast Automated Checking</li>
+                <li><i class="fas fa-pen-nib"></i> Clear marks + detailed feedback</li>
+                <li><i class="fas fa-shield-halved"></i> Data stays on-site</li>
+                <li><i class="fas fa-lock"></i> Secure processing</li>
+                <li><i class="fas fa-file-export"></i> Basic PDF Reports</li>
+            </ul>
+            <a href="#" class="pricing-btn btn-outline">Get Started</a>
+        </div>
+
+        <!-- Institutional Pro (Popular) -->
+        <div class="pricing-card popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="tier-title">Institutional Pro</div>
+            <div class="price-wrapper">
+                <span class="price">$5.49</span>
+                <span class="price-sub">/paper</span>
+            </div>
+            <p class="tier-desc">Advanced features built for institutional scale and peak demands.</p>
+            <ul class="features-list">
+                <li><i class="fas fa-magnifying-glass"></i> Higher accuracy on complex logic</li>
+                <li><i class="fas fa-gauge-high"></i> Built for exam-day peaks</li>
+                <li><i class="fas fa-sliders"></i> Admin controls + exports</li>
+                <li><i class="fas fa-database"></i> On-site data storage</li>
+                <li><i class="fas fa-sync"></i> LMS Integration (LTI)</li>
+            </ul>
+            <a href="#" class="pricing-btn btn-solid">Choose Pro</a>
+        </div>
+
+        <!-- Enterprise Card -->
+        <div class="pricing-card">
+            <div class="tier-title">Enterprise</div>
+            <div class="price-wrapper">
+                <span class="price">Contact Us</span>
+            </div>
+            <p class="tier-desc">Custom infrastructure and volume discounts for global universities.</p>
+            <ul class="features-list">
+                <li><i class="fas fa-globe"></i> Enterprise API access</li>
+                <li><i class="fas fa-screwdriver-wrench"></i> Custom integrations + support</li>
+                <li><i class="fas fa-user-tie"></i> Dedicated account manager</li>
+                <li><i class="fas fa-shield-check"></i> Advanced security + compliance</li>
+                <li><i class="fas fa-cloud-arrow-up"></i> Flexible deployment options</li>
+            </ul>
+            <a href="#" class="pricing-btn btn-outline">Contact Sales</a>
+        </div>
+    </div>
+
+    <!-- Talk to Sales Section -->
+    <section id="contact" style="padding: 120px 24px; max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="tag-small"># TALK_TO_SALES</span>
+            <h2 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1;">
+                Scale Institutional Intelligence <br>with Agentic Evaluation.</h2>
+        </div>
+
+        <div class="sales-card"
+            style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+            <div class="sales-info">
+                <p style="font-size: 1.25rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 40px;">
+                    Join the elite universities using Oritm to automate complex grading rubrics, eliminate bias, and
+                    deliver high-fidelity student performance signals.
+                </p>
+                <div style="display: grid; gap: 24px;">
+                    <div style="display: flex; gap: 16px; align-items: center;">
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 12px; background: rgba(138, 180, 248, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 700;">Verified Accuracy</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">0.1% margin of error on handwritten
+                                scripts.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 16px; align-items: center;">
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 12px; background: rgba(138, 180, 248, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 700;">Edge Deployment</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Processes scripts locally on your
+                                servers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sales-form-container"
+                style="background: #ffffff; border-radius: 24px; padding: 40px; color: #1a1a1a;">
+                <form>
+                    <div class="form-group">
+                        <label>Institutional Email</label>
+                        <input type="email" placeholder="dean@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Name</label>
+                        <input type="text" placeholder="Dr. Sarah Jenkins" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Protocol</label>
+                        <select>
+                            <option>Department-wide Scaling</option>
+                            <option>Private Cloud Deployment</option>
+                            <option>Standard Pro Plan</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit" style="background: #1a1a1a; color: white;">Initialize
+                        Session</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer
+        style="text-align: center; padding: 48px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem;">
+        &copy; 2026 ORITM Group. All rights reserved.
+    </footer>
+
+</body>
+
+</html>
