@@ -1,0 +1,4326 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORITM | Built the new way</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;700;900&family=JetBrains+Mono:wght@400;500&family=Kaushan+Script&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-rgb: 255, 255, 255;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --text-muted: #70757a;
+            --primary: #4285f4;
+            --border: #e8eaed;
+            --surface: #f8f9fa;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-rgb: 0, 0, 0;
+                --bg: #000000;
+                --text: #f1f3f4;
+                --text-muted: #bdc1c6;
+                --primary: #8ab4f8;
+                --border: #3c4043;
+                --surface: #202124;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Navigation --- */
+        .main-header {
+            position: fixed;
+            top: 24px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Center the nav, logo will be absolute or flex-start */
+            padding: 0 50px;
+            z-index: 4000;
+            pointer-events: none;
+            /* Let clicks pass to the fixed pill */
+        }
+
+        .main-header>* {
+            pointer-events: auto;
+            /* Re-enable clicks for items */
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(var(--bg-rgb), 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            width: fit-content;
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 100px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chevron {
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            transform: rotate(45deg) translateY(-2px);
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .nav-dropdown:hover .chevron {
+            transform: rotate(225deg) translateY(-2px);
+            opacity: 1;
+        }
+
+        .nav-item:hover {
+            background: var(--surface);
+        }
+
+        .nav-item.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* --- Brand Logo --- */
+        .brand-logo {
+            position: absolute;
+            left: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 150px;
+            /* Soft Dark Gradient: Deep Black to Muted Purple */
+            background: radial-gradient(circle at 50% 50%, rgba(45, 15, 80, 0.4) 0%, rgba(0, 0, 0, 0.8) 70%, #000 100%);
+            z-index: -1;
+            filter: blur(40px);
+            pointer-events: none;
+            opacity: 1;
+            border-radius: 40px;
+        }
+
+        .brand-text {
+            font-family: 'Kaushan Script', cursive;
+            font-size: 2.75rem;
+            color: #D1B3FF;
+            /* Solid Pastel Lavender */
+            text-transform: lowercase;
+            position: relative;
+            letter-spacing: -1px;
+            user-select: none;
+            display: inline-block;
+            /* Natural signature slant */
+            transform: rotate(-3deg);
+            font-weight: 300;
+            line-height: 1;
+            /* Minimal subtle glow for matte finish depth */
+            filter: drop-shadow(0 0 10px rgba(138, 77, 248, 0.2));
+            transition: all 0.4s ease;
+        }
+
+        .brand-sparkle {
+            position: absolute;
+            color: #fff;
+            font-size: 1.2rem;
+            pointer-events: none;
+            animation: sparkle-twinkle 6s infinite ease-in-out;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 10px #fff);
+        }
+
+        /* Loose sparkles placed away from letters */
+        .bs-1 {
+            top: -45px;
+            left: -10px;
+            font-size: 1.8rem;
+        }
+
+        .bs-2 {
+            top: 0px;
+            left: -75px;
+            font-size: 0.9rem;
+            animation-delay: 1.5s;
+        }
+
+        .bs-3 {
+            bottom: -35px;
+            right: -15px;
+            font-size: 2rem;
+            animation-delay: 0.8s;
+        }
+
+        .bs-4 {
+            bottom: 20px;
+            right: -75px;
+            font-size: 0.8rem;
+            animation-delay: 3s;
+        }
+
+        @keyframes sparkle-twinkle {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.4) rotate(45deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* --- Dropdown Styles --- */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            min-width: 280px;
+            background: rgba(var(--bg-rgb), 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            display: grid;
+            gap: 8px;
+            z-index: 3000;
+        }
+
+        .nav-dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.85rem;
+            transition: 0.2s;
+            display: block;
+        }
+
+        .dropdown-item:hover {
+            background: var(--surface);
+        }
+
+        .dropdown-item span {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-item small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* --- Technical Intelligence Surface (Entelligence Style) --- */
+        .intel-section {
+            padding: 120px 24px;
+            background: var(--bg);
+            text-align: center;
+        }
+
+        .intel-header h2 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+        }
+
+        .intel-header p {
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 60px;
+            font-size: 1.1rem;
+        }
+
+        .intel-card {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #020204;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            text-align: left;
+            overflow: hidden;
+            box-shadow: 0 80px 160px rgba(0, 0, 0, 0.5);
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(66, 133, 244, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 180, 248, 0.05) 0%, transparent 50%);
+        }
+
+        .intel-left {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intel-left h3 {
+            color: #d1ff4a;
+            /* Lime accent like Entelligence */
+            font-size: 2rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .intel-left p {
+            color: #bdc1c6;
+            font-size: 1rem;
+            margin-bottom: 32px;
+        }
+
+        .icon-cluster {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .mini-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .intel-right {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .report-inset {
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px;
+            height: 100%;
+            color: #1a1a1b;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-screenshot {
+            flex: 1;
+            background-image: url('static/img/analytics.png');
+            background-size: cover;
+            background-position: top center;
+            border-radius: 12px;
+            border: 1px solid #f1f3f4;
+            margin-top: 16px;
+        }
+
+        .report-header {
+            border-bottom: 1px solid #f1f3f4;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+        }
+
+        .report-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .report-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .report-card span {
+            font-size: 0.75rem;
+            color: #70757a;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .report-card strong {
+            font-size: 1.1rem;
+        }
+
+        .floating-query {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            background: #fff;
+            padding: 16px 24px;
+            border-radius: 100px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid #e8eaed;
+            color: #1a1a1a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            z-index: 10;
+        }
+
+        .query-btn {
+            width: 32px;
+            height: 32px;
+            background: #f1f3f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .intel-btn {
+            background: white;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            width: fit-content;
+            transition: 0.3s;
+        }
+
+        .intel-btn:hover {
+            background: #f0f0f0;
+        }
+
+        /* --- High-Fidelity Intelligence Surface --- */
+        .feature-stage {
+            padding: 100px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+            min-height: 700px;
+        }
+
+        .stage-details {
+            position: relative;
+        }
+
+        .detail-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+        }
+
+        .detail-item.active {
+            position: relative;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .detail-item h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin-bottom: 24px;
+            line-height: 1.05;
+        }
+
+        .detail-item p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .stage-visual {
+            background: #050505;
+            /* Pitch black for high fidelity contrast */
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            height: 550px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .visual-content {
+            position: absolute;
+            inset: 0;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .visual-content.active {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+
+        /* Dark High-Fi Components */
+        .neon-graph {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .neon-bar {
+            flex: 1;
+            background: rgba(66, 133, 244, 0.1);
+            border-top: 3px solid #4285f4;
+            box-shadow: 0 0 25px rgba(66, 133, 244, 0.3);
+            transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .neon-bar.green {
+            border-color: #34a853;
+            background: rgba(52, 168, 83, 0.1);
+            box-shadow: 0 0 25px rgba(52, 168, 83, 0.3);
+        }
+
+        .xai-tag-floating {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #4285f4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .status-strip {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+            width: 300px;
+        }
+
+        .status-fill {
+            height: 100%;
+            background: #4285f4;
+            box-shadow: 0 0 20px #4285f4;
+            transition: 1s ease;
+        }
+
+        .feedback-chat {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .chat-bubble {
+            padding: 16px 24px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            max-width: 90%;
+            line-height: 1.6;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-oritm {
+            background: #4285f4;
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-student {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* New High-Fi Visual Components */
+        .node-network {
+            position: relative;
+            width: 400px;
+            height: 300px;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #4285f4;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #4285f4;
+        }
+
+        .network-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #4285f4, transparent);
+            transform-origin: left center;
+            animation: pulse-line 2s infinite;
+        }
+
+        @keyframes pulse-line {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .ocr-scan-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+        }
+
+        .scan-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #34a853;
+            box-shadow: 0 0 20px #34a853;
+            animation: scan-move 3s infinite linear;
+            z-index: 2;
+        }
+
+        @keyframes scan-move {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        .consensus-circle {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed rgba(66, 133, 244, 0.3);
+            border-radius: 50%;
+            position: relative;
+            animation: rotate-slow 10s infinite linear;
+        }
+
+        @keyframes rotate-slow {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .agent-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #050505;
+            border: 1px solid #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: #4285f4;
+        }
+
+        /* --- Static Monkey w/ Moving Eyes --- */
+        .impact-section {
+            padding: 120px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 60px;
+            background: linear-gradient(180deg, transparent, rgba(66, 133, 244, 0.05));
+        }
+
+        .mascot-wrapper {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(1.1);
+        }
+
+        .monkey-agent {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle at 30% 30%, #a67c52, #5d3a1a);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+
+        /* Monkey Components */
+        .monkey-ear {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #5d3a1a;
+            border-radius: 50%;
+            top: 25%;
+            z-index: 1;
+        }
+
+        .ear-l {
+            left: -12px;
+        }
+
+        .ear-r {
+            right: -12px;
+        }
+
+        .monkey-face {
+            position: absolute;
+            width: 85%;
+            height: 75%;
+            background: #e6c5a3;
+            bottom: 5%;
+            left: 7.5%;
+            border-radius: 45% 45% 50% 50%;
+            z-index: 2;
+        }
+
+        .monkey-nose {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 12px;
+            background: #3e2712;
+            border-radius: 40%;
+        }
+
+        /* Spectacles (No Blurring, Crisp) */
+        .monkey-specs {
+            position: absolute;
+            top: 35%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            z-index: 5;
+        }
+
+        .spec-lens {
+            width: 42px;
+            height: 42px;
+            border: 4px solid #1a1a1a;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eye-pupil {
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: eye-scan-random 4s infinite ease-in-out;
+        }
+
+        @keyframes eye-scan-random {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            20% {
+                transform: translate(-10%, -50%);
+            }
+
+            /* Look Right */
+            40% {
+                transform: translate(-90%, -30%);
+            }
+
+            /* Look Left-Up */
+            60% {
+                transform: translate(-50%, -10%);
+            }
+
+            /* Look Down */
+            80% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Bubbles */
+        .floating-msg {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: pop-in 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .msg-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.6rem;
+        }
+
+        /* Bubble Positioning */
+        .msg-1 {
+            top: 0;
+            right: -20px;
+            animation-delay: 0.2s;
+        }
+
+        .msg-2 {
+            top: 80px;
+            right: -60px;
+            animation-delay: 0.8s;
+        }
+
+        .msg-3 {
+            bottom: 40px;
+            left: -40px;
+            animation-delay: 1.4s;
+        }
+
+        .msg-4 {
+            top: 40px;
+            left: -50px;
+            animation-delay: 2.0s;
+        }
+
+        .msg-5 {
+            bottom: 20px;
+            right: -20px;
+            animation-delay: 2.6s;
+        }
+
+        .msg-6 {
+            top: -30px;
+            left: 20px;
+            animation-delay: 3.2s;
+        }
+
+        @keyframes buddy-float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        @keyframes hand-wave {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-10deg);
+            }
+        }
+
+        @keyframes hand-point {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(5px) rotate(10deg);
+            }
+        }
+
+        @keyframes pop-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            5%,
+            75% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            80%,
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Ultra-High Visibility Audit Hub CSS */
+        .script-eval-stage {
+            position: relative;
+            /* Relative for flex layout */
+            width: 300px;
+            height: 180px;
+            /* More landscape for script reading */
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-left: 4px solid #4285f4;
+            /* Accent */
+            border-radius: 12px;
+            right: auto;
+            top: auto;
+            overflow: hidden;
+            z-index: 5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            font-family: 'JetBrains Mono', monospace;
+            /* Code font for script */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hub-header {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hub-title {
+            font-size: 0.65rem;
+            color: #4285f4;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: #34a853;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #34a853;
+            animation: pulse 1s infinite;
+        }
+
+        .scanning-line {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #34a853, transparent);
+            box-shadow: 0 0 30px #34a853;
+            top: 0;
+            z-index: 15;
+            animation: scan-vertical 4s infinite linear;
+        }
+
+        .script-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: script-scroll 12s infinite linear;
+        }
+
+        .audit-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .audit-tag {
+            font-size: 0.6rem;
+            color: #70757a;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .audit-value {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .audit-marks {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.75rem;
+            color: #34a853;
+            font-weight: 900;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scan-vertical {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        @keyframes script-scroll {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes eye-scan-right {
+
+            0%,
+            100% {
+                transform: translateX(6px);
+            }
+
+            50% {
+                transform: translateX(12px);
+            }
+        }
+
+        @keyframes value-reveal {
+
+            0%,
+            30% {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            45%,
+            90% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+        .impact-content h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .impact-content p {
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes pulse-core {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* --- Hero Section: Human-Grade Audits --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 240px 10% 160px 10%;
+            /* Increased bottom padding to move text up */
+            background: #000;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 50%, rgba(138, 77, 248, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+            /* Reduced further for compact visual balance */
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -1.2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+            /* Slightly more compact paragraph */
+            color: #9aa0a6;
+            max-width: 650px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            background: #fff;
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-primary:hover {
+            background: #f1f3f4;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-secondary:hover {
+            border-color: rgba(138, 77, 248, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(138, 77, 248, 0.1);
+        }
+
+        .cta-download {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(15px);
+            z-index: 4001;
+        }
+
+        .cta-download:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #fff;
+            transform: translateY(calc(-50% - 2px));
+            /* Maintain center skip */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Typing Animation cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: #D1B3FF;
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Initial state for fade-in items */
+        .hero-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-avatars {
+            display: flex;
+            align-items: center;
+            margin-right: 4px;
+        }
+
+        .cta-avatars img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            margin-left: -10px;
+            object-fit: cover;
+        }
+
+        .cta-avatars img:first-child {
+            margin-left: 0;
+        }
+
+        /* Responsive Header for Dark Hero State */
+        .main-header {
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.8s ease;
+        }
+
+        .main-header nav {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-header .nav-item {
+            color: #f1f3f4 !important;
+        }
+
+        .main-header .nav-item.active {
+            background: #fff !important;
+            color: #000 !important;
+        }
+
+        .main-header .brand-text {
+            color: #D1B3FF !important;
+            filter: drop-shadow(0 0 10px rgba(138, 77, 248, 0.3)) !important;
+        }
+
+        .main-header .brand-logo::before {
+            background: radial-gradient(circle at 50% 50%, rgba(138, 77, 248, 0.15) 0%, transparent 80%) !important;
+        }
+
+        /* --- Bento Grid Platform Section --- */
+        .platform-section {
+            background: #000;
+            position: relative;
+            z-index: 20;
+            padding: 120px 24px;
+            max-width: 100% !important;
+            margin: 0 !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 340px);
+            gap: 24px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .bento-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+        }
+
+        .bento-1 {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        /* Main Feature */
+        .bento-2 {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        /* Secondary */
+        .bento-3 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Stats/Minor */
+        .bento-4 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Integration */
+
+        .brand-sparkle {
+            position: absolute;
+            color: #fff;
+            font-size: 1.2rem;
+            pointer-events: none;
+            animation: sparkle-twinkle 5s infinite ease-in-out;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 8px #fff);
+            font-weight: normal;
+        }
+
+        /* Subtle sparkles placed loosely around text (not touching letters) */
+        .bs-1 {
+            top: -35px;
+            left: -20px;
+        }
+
+        .bs-2 {
+            top: -10px;
+            left: -60px;
+            font-size: 0.8rem;
+            animation-delay: 1.5s;
+        }
+
+        .bs-3 {
+            bottom: -25px;
+            right: -20px;
+            font-size: 1.4rem;
+            animation-delay: 0.8s;
+        }
+
+        .bs-4 {
+            bottom: 10px;
+            right: -60px;
+            font-size: 0.7rem;
+            animation-delay: 2.2s;
+        }
+
+        .bento-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.15;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .bento-item:hover .bento-img {
+            opacity: 0.3;
+            transform: scale(1.05);
+        }
+
+        .bento-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .bento-item h3 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .bento-item p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 320px;
+        }
+
+        .tag-small {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        /* --- Logic Layer Section --- */
+        .logic-section {
+            padding: 150px 24px;
+            background: #000;
+        }
+
+        .terminal-window {
+            background: #0a0a0c;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .logic-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pipe-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .pipe-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .pipe-card .step-meta {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .pipe-card h4 {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .pipe-card p {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 12px 20px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .term-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .term-dot.red {
+            background: #ff5f56;
+        }
+
+        .term-dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .term-dot.green {
+            background: #27c93f;
+        }
+
+        .terminal-body {
+            padding: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #666;
+            height: 460px;
+            /* Fixed height to prevent layout expansion */
+            overflow: hidden;
+            /* Hide scrolled content */
+        }
+
+        .term-line span {
+            color: #fff;
+        }
+
+        .term-accent {
+            color: var(--accent);
+        }
+
+        /* --- Hybrid Routing Viz --- */
+        /* --- Flow Viz (Reference Match) --- */
+        .viz-flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 80px auto 0;
+            position: relative;
+            padding: 60px 40px;
+            min-height: 500px;
+        }
+
+        .flow-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 2;
+            flex: 0 0 auto;
+        }
+
+        .flow-card {
+            background: #fff;
+            color: #000;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            border: 1px solid #e5e7eb;
+        }
+
+        .flow-hub {
+            width: 160px;
+            height: 160px;
+            background: #a3e635;
+            /* Lime Green matching reference */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 0 0 50px rgba(163, 230, 53, 0.4);
+            z-index: 5;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Connecting Lines (Simulated with pseudo-elements for simplicity) */
+        .flow-lines-bg {
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            right: 15%;
+            height: 200px;
+            transform: translateY(-50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 4px;
+            background: #a3e635;
+            transform: translate(60px, -50%);
+        }
+
+        .flow-card i {
+            font-size: 1.1rem;
+        }
+
+        .flow-card.blue i {
+            color: #4285f4;
+        }
+
+        .flow-card.orange i {
+            color: #f97316;
+        }
+
+        .flow-card.green i {
+            color: #34a853;
+        }
+
+        /* --- Stats Cards Section --- */
+        .data-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 80px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: none;
+        }
+
+        .data-item {
+            /* Card with visible rounded borders */
+            padding: 32px 24px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(10, 10, 12, 0.4);
+            border-radius: 16px;
+        }
+
+        .data-item:hover {
+            /* No hover effect on stats */
+            transform: none;
+            box-shadow: none;
+        }
+
+        .data-item:last-child {
+            border-right: none;
+        }
+
+        .data-val {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+
+
+        /* --- Pipeline Section --- */
+        .pipeline-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            margin: 80px 0;
+        }
+
+        .pipe-step {
+            background: var(--bg);
+            padding: 60px 40px;
+        }
+
+        .pipe-num {
+            font-weight: 900;
+            color: var(--text-muted);
+            opacity: 0.3;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        /* --- Final CTA --- */
+        .final-cta {
+            padding: 120px 0 0 0;
+            text-align: center;
+            background: #000;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid #111;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(5rem, 35vw, 28rem);
+            font-weight: 100;
+            letter-spacing: -0.05em;
+            margin: 0;
+            line-height: 0.6;
+            margin-bottom: -0.22em;
+            /* Clip the bottom portion */
+            background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 50%, #404040 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 5%;
+            background: #000;
+            color: #70757a;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-brand {
+            font-weight: 100;
+            color: #fff;
+            font-size: 1rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+
+        .footer-copyright {
+            text-align: right;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #9ca3af;
+            /* Increased visibility from #444 */
+            /* Increased visibility from #444 */
+        }
+
+        /* --- Talk to Sales Section --- */
+        .sales-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 80px 24px;
+            align-items: center;
+        }
+
+        .sales-content h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .sales-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .btn-try {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #e2e8e4;
+            color: #2d3436;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid #d1d8d4;
+            transition: var(--transition);
+        }
+
+        .btn-try:hover {
+            background: #d1d8d4;
+        }
+
+        .sales-form-container {
+            background: #f8f9fa;
+            border-radius: 24px;
+            padding: 40px;
+            color: #1a1a1a;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #e1e4e8;
+            background: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: #3d4638;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #2d3428;
+            transform: scale(0.99);
+        }
+
+        @media (max-width: 992px) {
+            .sales-section {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                text-align: center;
+            }
+
+            .sales-content p {
+                margin: 0 auto 40px;
+            }
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Showcase Surface --- */
+        .showcase-surface {
+            padding: 120px 24px;
+            text-align: center;
+            background: #000;
+        }
+
+        .surface-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .surface-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .surface-tab {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            padding-bottom: 8px;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .surface-tab:hover,
+        .surface-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--text);
+        }
+
+        .surface-frame {
+            background: #0a0a0c;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: 0 100px 200px -50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .frame-header {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 12px;
+        }
+
+        .frame-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .frame-content {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame-img {
+            max-width: 100%;
+            height: auto;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .frame-img.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- Walkthrough Demo (Premium SaaS) --- */
+        .walkthrough-section {
+            padding: 120px 24px;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .walkthrough-section {
+                background: #000000;
+            }
+        }
+
+        .walkthrough-card {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(var(--bg-rgb), 0.02);
+            /* Outer border removed for absolute seamless look */
+            border-radius: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 500px;
+            max-height: 550px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .walkthrough-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .walkthrough-left {
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            background: #000;
+            /* Border removed as requested */
+            position: relative;
+            color: #fff;
+        }
+
+        .walkthrough-step-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 40px;
+            right: 40px;
+        }
+
+        .walkthrough-step-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .walkthrough-left h3 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            line-height: 1.05;
+            color: #fff;
+        }
+
+        .walkthrough-left p {
+            font-size: 1.15rem;
+            color: #aaa;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .walkthrough-left li {
+            font-size: 1.05rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #eee;
+            font-weight: 500;
+        }
+
+        .walkthrough-left li i {
+            color: #4285f4;
+            font-size: 0.95rem;
+        }
+
+        .walkthrough-right {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* Essential Motion Elements */
+        .walkthrough-cursor {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            z-index: 5000;
+            pointer-events: none;
+            transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.5s ease;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .cursor-pointer {
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'></path></svg>") no-repeat;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .walkthrough-cursor.clamping .cursor-pointer {
+            transform: scale(0.7) rotate(-10deg);
+        }
+
+        .ui-highlight {
+            position: absolute;
+            border: 2px solid #4285f4;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(66, 133, 244, 0.4);
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1500;
+        }
+
+        .cursor-ripple {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(66, 133, 244, 0.15);
+            border: 1px solid rgba(66, 133, 244, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        @keyframes ripple-effect {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Custom Dashboard Styles - Premium Dark Edition */
+        .custom-dashboard {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            /* Pure Black Background */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            /* Outer border removed for cleaner look */
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .dash-header {
+            padding: 12px 20px;
+            /* Internal header border removed */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0a0a0a;
+        }
+
+        .dash-header-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4285f4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dash-body {
+            flex: 1;
+            display: flex;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Side-by-Side Split Panels - Dark Theme */
+        .dash-panel-q {
+            flex: 1;
+            padding: 20px;
+            /* Internal divider removed */
+            overflow-y: auto;
+            background: #0a0a0a;
+        }
+
+        .dash-panel-a {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #050505;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .dash-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #5f6368;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .dash-question-content {
+            font-size: 1rem;
+            color: #e8eaed;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .dash-answer-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #bdc1c6;
+            margin-bottom: 20px;
+        }
+
+        .dash-highlight {
+            background: rgba(66, 133, 244, 0.2);
+            border-bottom: 2px solid #4285f4;
+            padding: 0 2px;
+            color: #fff;
+        }
+
+        /* Integrated Bottom Controls - Dark Theme */
+        .dash-controls-row {
+            margin-top: auto;
+            padding-top: 15px;
+            /* Control row divider removed */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid #3c4043;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9aa0a6;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: #1a1a1a;
+        }
+
+        .dash-icon-btn.active-pen {
+            border-color: #4285f4;
+            color: #4285f4;
+            background: rgba(66, 133, 244, 0.1);
+        }
+
+        .dash-icon-btn.active-bulb {
+            border-color: #fbbc04;
+            color: #fbbc04;
+            background: rgba(251, 188, 4, 0.1);
+        }
+
+        .dash-icon-btn.active-chart {
+            border-color: #34a853;
+            color: #34a853;
+            background: rgba(52, 168, 83, 0.1);
+        }
+
+        .dash-icon-btn.active-balance {
+            border-color: #a142f4;
+            color: #a142f4;
+            background: rgba(161, 66, 244, 0.1);
+        }
+
+        /* Separate Feedback & Criteria Overlays - Dark Theme */
+        .dash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .dash-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .feedback-typing {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #e8eaed;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #e8eaed;
+        }
+
+        .criteria-table th {
+            text-align: left;
+            font-size: 0.8rem;
+            color: #9aa0a6;
+            border-bottom: 1px solid #333;
+            padding: 10px 0;
+        }
+
+        .criteria-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        /* Cognitive Chart Visualization */
+        .cog-chart-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cog-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cog-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .cog-label {
+            color: #9aa0a6;
+            font-weight: 500;
+        }
+
+        .cog-val {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .cog-bar-wrap {
+            height: 8px;
+            background: #202124;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cog-bar-fill {
+            height: 100%;
+            background: #34a853;
+            /* Success Green */
+            border-radius: 100px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 10px rgba(52, 168, 83, 0.3);
+        }
+
+        .cog-domain-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #34a853;
+            background: rgba(52, 168, 83, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Unified Overlay System */
+        .dash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .dash-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .feedback-typing {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #e8eaed;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .criteria-table th,
+        .criteria-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .criteria-table th {
+            font-weight: 700;
+            color: #70757a;
+            background: #f8f9fa;
+        }
+
+        .badge-positive {
+            background: #e6f4ea;
+            color: #1e8e3e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .walkthrough-conclusion {
+            display: none;
+            text-align: center;
+            opacity: 0;
+            padding: 40px;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            color: #fff;
+        }
+
+        .walkthrough-conclusion.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <!-- Brand Identity -->
+        <a href="#" class="brand-logo">
+            <div class="brand-text">
+                oritm
+            </div>
+        </a>
+
+        <nav>
+            <a href="#" class="nav-item active">Home</a>
+
+            <div class="nav-dropdown">
+                <a href="#" class="nav-item">Features <span class="chevron"></span></a>
+                <div class="dropdown-content">
+                    <a href="#gateway" class="dropdown-item">
+                        <span>Agentic Gateway</span>
+                        <small>Distributed orchestration for scale.</small>
+                    </a>
+                    <a href="#vision" class="dropdown-item">
+                        <span>Synthetic Vision</span>
+                        <small>High-fidelity handwriting OCR.</small>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>Consensus Engine</span>
+                        <small>Multi-agent verification logic.</small>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-dropdown">
+                <a href="#" class="nav-item">Use Cases <span class="chevron"></span></a>
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                        <span>State Examinations</span>
+                        <small>Scale huge batches with 0% error.</small>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>Corporate Training</span>
+                        <small>Automate internal skill assessment.</small>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>Language Learning</span>
+                        <small>Analyze complex script handwriting.</small>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" class="nav-item">Pricing</a>
+        </nav>
+
+        <!-- Download Action at top right -->
+        <a href="#" class="cta-download">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download</span>
+        </a>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 id="hero-typed-title" style="min-height: 2.2em;"></h1>
+                <p class="hero-reveal" style="transition-delay: 0.3s;">Oritm doesn't just eliminate the burden of manual
+                    grading it deciphers student patterns to reveal hidden gaps in understanding with the precision of
+                    agentic AI.</p>
+                <div class="hero-cta-group hero-reveal" style="transition-delay: 0.6s;">
+                    <a href="#" class="cta-primary">Try it now</a>
+                    <a href="https://calendar.app.google/ormxzUZUY4fBR9Bz7" target="_blank" rel="noopener noreferrer"
+                        class="cta-secondary">
+                        <div class="cta-avatars">
+                            <img src="https://ui-avatars.com/api/?name=O&background=D1B3FF&color=000" alt="Oritm">
+                            <img src="https://ui-avatars.com/api/?name=A&background=8ab4f8&color=000" alt="Agent">
+                        </div>
+                        <span>Book a demo</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- Moved -->
+        <section class="walkthrough-section" id="live-demo" style="margin-top: 60px;">
+            <div class="intel-header" style="margin-bottom: 30px; text-align: center;">
+                <span class="tag-small"># ACTION_GRADING_LIVE</span>
+                <h2 style="margin-bottom: 10px; font-size: 2.5rem;">Agentic Evaluation in Action.</h2>
+            </div>
+            <div class="walkthrough-card" id="demo-card">
+                <!-- Left Side: Dynamic Text -->
+                <div class="walkthrough-left" id="step-info">
+                    <!-- Step 1: Pen Icon (Grading) -->
+                    <div class="walkthrough-step-content active" data-step="1">
+                        <span class="tag-small">ACTION / GRADING</span>
+                        <h3>Precision Scoring.</h3>
+                        <p>The system evaluates the core logic of student responses, dissecting technical accuracy with
+                            deep context recognition.</p>
+                        <ul>
+                            <li><i class="fas fa-microchip"></i> Structural logic extraction</li>
+                            <li><i class="fas fa-brain"></i> Contextual parameter review</li>
+                            <li><i class="fas fa-users-gear"></i> Multi-agent consensus verify</li>
+                        </ul>
+                    </div>
+                    <!-- Step 2: Lightbulb Icon (Feedback) -->
+                    <div class="walkthrough-step-content" data-step="2">
+                        <span class="tag-small">ACTION / FEEDBACK</span>
+                        <h3>Actionable Insight.</h3>
+                        <p>Bridging the conceptual gap through automated reasoning, providing students with the exact
+                            path to mastery.</p>
+                        <ul>
+                            <li><i class="fas fa-terminal"></i> Semantic delta isolation</li>
+                            <li><i class="fas fa-comment-dots"></i> Narrative reasoning output</li>
+                            <li><i class="fas fa-route"></i> Personalized learning vector</li>
+                        </ul>
+                    </div>
+                    <!-- Step 3: Blooms (New) -->
+                    <div class="walkthrough-step-content" data-step="3">
+                        <span class="tag-small">ACTION / COGNITIVE</span>
+                        <h3>Bloom's Analysis.</h3>
+                        <p>Quantifying the depth of understanding by mapping student responses across cognitive domains.
+                        </p>
+                        <ul>
+                            <li><i class="fas fa-brain"></i> Domain depth profiling</li>
+                            <li><i class="fas fa-chart-pie"></i> Taxonomy level mapping</li>
+                            <li><i class="fas fa-diagram-project"></i> Synthesis scoring loop</li>
+                        </ul>
+                    </div>
+                    <!-- Step 4: Balance Icon (Criteria) -->
+                    <div class="walkthrough-step-content" data-step="4">
+                        <span class="tag-small">ACTION / CRITERIA</span>
+                        <h3>Sovereign Mapping.</h3>
+                        <p>Objective alignment against institutional standards and rubrics, ensuring global fairness.
+                        </p>
+                        <ul>
+                            <li><i class="fas fa-layer-group"></i> Hierarchical rubric sync</li>
+                            <li><i class="fas fa-shield-halved"></i> Zero-bias objective score</li>
+                            <li><i class="fas fa-clipboard-check"></i> Standardized audit log</li>
+                        </ul>
+                    </div>
+                    <!-- Step 5: Audit -->
+                    <div class="walkthrough-step-content" data-step="5">
+                        <span class="tag-small">ACTION / DELIVERY</span>
+                        <h3>Systemic Integrity.</h3>
+                        <p>The final record is finalized with complete transparency, ready for institutional archiving.
+                        </p>
+                        <ul>
+                            <li><i class="fas fa-lock"></i> Encryption-sealed results</li>
+                            <li><i class="fas fa-server"></i> Sovereign data residency</li>
+                            <li><i class="fas fa-chart-line"></i> Institutional growth metrics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Side: Interaction Demo -->
+                <div class="walkthrough-right" id="demo-wrap">
+                    <div class="walkthrough-screen-wrap">
+                        <div class="custom-dashboard">
+                            <!-- Header -->
+                            <div class="dash-header">
+                                <div class="dash-header-title">Oritm </div>
+                                <div style="color: #70757a; font-size: 0.75rem;">Session: Spring 2026 â€¢ AI Audit</div>
+                            </div>
+                            <!-- Body: Split View -->
+                            <div class="dash-body">
+                                <!-- Left: Question Paper -->
+                                <div class="dash-panel-q">
+                                    <div class="dash-label">Question 01</div>
+                                    <div class="dash-question-content">
+                                        Compare the performance of LLMs in structured data extraction?
+                                        Explain the role of context windows and token mapping.
+                                    </div>
+                                </div>
+
+                                <!-- Right: Student Answer Area -->
+                                <div class="dash-panel-a">
+                                    <div class="dash-label">Student Answer</div>
+                                    <div class="dash-answer-content">
+                                        The performance of LLMs depends on the <span class="dash-highlight">attention
+                                            mechanism</span> and parameter scale. Structured data requires precise token
+                                        mapping and context window management.
+                                        In enterprise settings, <span class="dash-highlight">agentic workflows</span>
+                                        provide a 20% increase in layout consistency.
+                                    </div>
+
+                                    <!-- Bottom Integration Controls -->
+                                    <div class="dash-controls-row">
+                                        <div class="dash-icon-btn" id="target-pen"><i class="fas fa-pen-nib"></i></div>
+                                        <div class="dash-icon-btn" id="target-bulb"><i class="fas fa-lightbulb"></i>
+                                        </div>
+                                        <div class="dash-icon-btn" id="target-chart"><i class="fas fa-chart-simple"></i>
+                                        </div>
+                                        <div class="dash-icon-btn" id="target-balance"><i
+                                                class="fas fa-scale-balanced"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Overlay: Feedback -->
+                            <div class="dash-overlay" id="overlay-feedback">
+                                <div class="dash-label" style="color: #fbbc04;">AI Contextual Feedback</div>
+                                <div class="feedback-typing" id="typing-feedback"></div>
+                            </div>
+
+                            <!-- Overlay: Blooms (New) -->
+                            <div class="dash-overlay" id="overlay-blooms">
+                                <div class="dash-label" style="color: #34a853;">Cognitive Taxonomy Alignment</div>
+                                <h3
+                                    style="margin-top:5px; font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">
+                                    Bloom's Taxonomy Map</h3>
+                                <div class="cog-chart-container">
+                                    <div class="cog-row">
+                                        <div class="cog-info">
+                                            <span class="cog-label">Technical Mastery</span>
+                                            <span class="cog-domain-tag">APPLYING</span>
+                                            <span class="cog-val">94%</span>
+                                        </div>
+                                        <div class="cog-bar-wrap">
+                                            <div class="cog-bar-fill" data-target="94%" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cog-row">
+                                        <div class="cog-info">
+                                            <span class="cog-label">Critical Synthesis</span>
+                                            <span class="cog-domain-tag">ANALYZING</span>
+                                            <span class="cog-val">82%</span>
+                                        </div>
+                                        <div class="cog-bar-wrap">
+                                            <div class="cog-bar-fill" data-target="82%" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cog-row">
+                                        <div class="cog-info">
+                                            <span class="cog-label">Concept Linking</span>
+                                            <span class="cog-domain-tag">EVALUATING</span>
+                                            <span class="cog-val">65%</span>
+                                        </div>
+                                        <div class="cog-bar-wrap">
+                                            <div class="cog-bar-fill" data-target="65%" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Overlay: Criteria -->
+                            <div class="dash-overlay" id="overlay-criteria">
+                                <div class="dash-label" style="color: #a142f4;">Institutional Standard Audit</div>
+                                <h3
+                                    style="margin-top:5px; font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">
+                                    Rubric Compliance Report</h3>
+                                <div class="cog-chart-container">
+                                    <div class="cog-row">
+                                        <div class="cog-info">
+                                            <span class="cog-label">Curriculum Alignment</span>
+                                            <span class="badge-positive"
+                                                style="font-size: 0.6rem; padding: 2px 6px;">VERIFIED</span>
+                                            <span class="cog-val">100%</span>
+                                        </div>
+                                        <div class="cog-bar-wrap">
+                                            <div class="cog-bar-fill" data-target="100%"
+                                                style="width: 0%; background: #a142f4;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cog-row">
+                                        <div class="cog-info">
+                                            <span class="cog-label">Bias Elimination Log</span>
+                                            <span class="badge-positive"
+                                                style="font-size: 0.6rem; padding: 2px 6px;">SECURED</span>
+                                            <span class="cog-val">100%</span>
+                                        </div>
+                                        <div class="cog-bar-wrap">
+                                            <div class="cog-bar-fill" data-target="100%"
+                                                style="width: 0%; background: #a142f4;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Motion Elements -->
+                        <div class="walkthrough-cursor" id="demo-cursor">
+                            <div class="cursor-pointer"></div>
+                        </div>
+                        <div class="ui-highlight" id="demo-highlight"></div>
+                        <div class="cursor-ripple" id="demo-ripple"></div>
+
+                        <!-- Summary Final -->
+                        <div class="walkthrough-conclusion" id="final-summary">
+                            <i class="fas fa-check-double"
+                                style="color: #34a853; font-size: 4rem; margin-bottom: 24px;"></i>
+                            <h2 style="font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 16px;">
+                                Enterprise Grade.</h2>
+                            <p style="font-size: 1.4rem; color: #70757a; font-weight: 500;">Oritm Institutional
+                                Intelligence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bento Grid Section -->
+        <section class="platform-section" id="features">
+            <div class="intel-header" style="margin-bottom: 60px;">
+                <span class="tag-small"># CORE_ARCHITECTURE</span>
+                <h2 style="font-size: 3rem;">The Sovereign Stack.</h2>
+                <p>Four pillars of sovereign intelligence working in unison.</p>
+            </div>
+            <div class="bento-grid">
+                <!-- Large Block: Gateway -->
+                <div class="bento-item bento-1" id="gateway">
+                    <img src="static/img/ai_gateway.png" class="bento-img" alt="Gateway">
+                    <div class="bento-content">
+                        <span class="tag-small"># ORCHESTRATION</span>
+                        <h3>Agentic <br>Gateway.</h3>
+                        <p>A distributed request engine that intelligently routes between cloud and local nodes for
+                            unprecedented scale.</p>
+                    </div>
+                </div>
+
+                <!-- Wide Block: Vision -->
+                <div class="bento-item bento-2" id="vision">
+                    <img src="static/img/ocr_handwriting.png" class="bento-img" alt="Vision">
+                    <div class="bento-content">
+                        <span class="tag-small"># SYNTHETIC_VISION</span>
+                        <h3>Precision <br>Extraction.</h3>
+                        <p>Advanced high-fidelity extraction specialized in the chaotic spatial layouts of human-written
+                            exams.</p>
+                    </div>
+                </div>
+
+                <!-- Block 3: Consensus -->
+                <div class="bento-item bento-3">
+                    <img src="static/img/workspace.png" class="bento-img" alt="Consensus">
+                    <div class="bento-content">
+                        <span class="tag-small"># PROTOCOL</span>
+                        <h3>Consensus <br>Engine.</h3>
+                        <p>Multi-agent verification pipelines.</p>
+                    </div>
+                </div>
+
+                <!-- Block 4: Enterprise -->
+                <div class="bento-item bento-4">
+                    <img src="static/img/system_topology.png" class="bento-img" alt="Security">
+                    <div class="bento-content">
+                        <span class="tag-small"># SECURITY</span>
+                        <h3>Edge <br>Deploy.</h3>
+                        <p>Full air-gapped sovereignty.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logic Section -->
+        <section class="logic-section">
+            <div class="container" style="text-align: center; margin-bottom: 80px;">
+                <span class="tag-small"># AGENTIC_REASONING</span>
+                <h2 style="font-size: 4rem; font-weight: 900; letter-spacing: -3px;">Logic at the speed <br> of light.
+                </h2>
+            </div>
+
+            <div class="logic-split-grid">
+                <!-- Left: Terminal -->
+                <div class="terminal-window animate">
+                    <div class="terminal-header">
+                        <div class="term-dot red"></div>
+                        <div class="term-dot yellow"></div>
+                        <div class="term-dot green"></div>
+                    </div>
+                    <div class="terminal-body" id="live-terminal">
+                        <!-- Typing Animation injected here -->
+                    </div>
+                </div>
+
+                <!-- Right: Pipeline Grid (Moved & Styled) -->
+                <div class="pipeline-grid">
+                    <!-- Step 1 -->
+                    <div class="pipe-card">
+                        <div>
+                            <div class="step-meta">01 / INGEST</div>
+                            <h4>Omni-Channel Capture.</h4>
+                            <p>Seamlessly ingest physical hand-written answer sheets, digital PDFs, or raw image scans.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="pipe-card">
+                        <div>
+                            <div class="step-meta">02 / EXTRACT</div>
+                            <h4>Synthetic OCR.</h4>
+                            <p>Proprietary vision models dissect the layout and extract strokes with absolute fidelity.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="pipe-card">
+                        <div>
+                            <div class="step-meta">03 / REASON</div>
+                            <h4>Agentic Protocol.</h4>
+                            <p>Multiple AI experts review content in parallel using consensus to eliminate bias.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="pipe-card">
+                        <div>
+                            <div class="step-meta">04 / DELIVERY</div>
+                            <h4>Actionable Data.</h4>
+                            <p>Export structured evaluation reports and comprehensive skill scorecards instantly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Intelligence Section (Entelligence.ai Style) -->
+        <section class="intel-section" id="usecases">
+            <div class="intel-header">
+                <h2>Evaluate with Real Intelligence</h2>
+                <p>Complete visibility into student performance, evaluation impact, and how knowledge flows from
+                    physical paper to digital insights.</p>
+            </div>
+
+            <div class="intel-card animate">
+                <div class="intel-left">
+                    <h3>AI Insights -Ask Oritm</h3>
+                    <p>Get answers about your classroom performance in seconds. Supported integrations for modern
+                        pedagogies.</p>
+
+                    <div class="icon-cluster">
+                        <div class="mini-icon" title="PDF"><i class="fas fa-file-pdf"></i></div>
+                        <div class="mini-icon" title="Images"><i class="fas fa-image"></i></div>
+                        <div class="mini-icon" title="LMS"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="mini-icon" title="Google Classroom"><i class="fab fa-google"></i></div>
+                        <div class="mini-icon" title="Cloud"><i class="fas fa-cloud-upload-alt"></i></div>
+                    </div>
+
+                    <p style="font-size: 0.9rem; color: #9aa0a6;">Ask about OCR fidelity, student scoring gaps, or
+                        curriculum alignment and get answers backed by real agentic data.</p>
+                </div>
+
+                <div class="intel-right">
+                    <div class="report-inset">
+                        <div class="report-header">
+                            <div class="report-badge">
+                                <i class="fas fa-chart-line" style="color: #4285f4;"></i>
+                                Batch Execution Report
+                            </div>
+                            <p style="font-size: 0.75rem; color: #70757a; margin-top: 4px;">Latest 250 evaluations
+                                across current school batch</p>
+                        </div>
+
+                        <div class="report-grid">
+                            <div class="report-card">
+                                <span>Batch Accuracy</span>
+                                <strong>99.82%</strong>
+                            </div>
+                            <div class="report-card">
+                                <span>Avg. Latency</span>
+                                <strong>1.2s</strong>
+                            </div>
+                        </div>
+
+                        <div class="report-screenshot"></div>
+                    </div>
+
+                    <!-- Floating Query Bar -->
+                    <div class="floating-query">
+                        <span>Which topics had the highest error rate in the last exam?</span>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- High-Fidelity Intelligence Surface -->
+        <section class="feature-stage" id="showcase-surface">
+            <div class="stage-details">
+                <!-- Step 1: Growth -->
+                <div class="detail-item active" data-index="0">
+                    <span class="tag-small"># CORE_ANALYTICS</span>
+                    <h2>Growth <br>Intelligence.</h2>
+                    <p>Track institutional learning curves and knowledge gap propagation in real-time across all
+                        evaluation batches. Automated cohort analysis for every classroom.</p>
+                </div>
+                <!-- Step 2: XAI -->
+                <div class="detail-item" data-index="1">
+                    <span class="tag-small"># XAI_SYNTHESIS</span>
+                    <h2>Sentence <br>Synthesizer.</h2>
+                    <p>Identify exactly which sentences drive marks up or down with high-fidelity visual reasoning.
+                        Transparent XAI engine that builds institutional trust.</p>
+                </div>
+                <!-- Step 3: Criteria -->
+                <div class="detail-item" data-index="2">
+                    <span class="tag-small"># BIAS_MITIGATION</span>
+                    <h2>Evaluation <br>Criteria.</h2>
+                    <p>Transparent real-time grading rubrics ensure zero bias. Multi-agent consensus cross-verifies
+                        every score against institutional standards with proof.</p>
+                </div>
+                <!-- Step 4: Feedback -->
+                <div class="detail-item" data-index="3">
+                    <span class="tag-small"># TAILORED_INSIGHTS</span>
+                    <h2>Detailed <br>Feedback.</h2>
+                    <p>Generates high-fidelity, constructive feedback cycles tailored to each student's specific
+                        performance gaps and growth potential.</p>
+                </div>
+                <!-- Step 5: Gateway -->
+                <div class="detail-item" data-index="4">
+                    <span class="tag-small"># EDGE_COMPUTE</span>
+                    <h2>Hybrid AI <br>Gateway.</h2>
+                    <p>Distributed orchestration across cloud and local nodes ensures 100% uptime even in offline
+                        environments. Zero-latency processing at scale.</p>
+                </div>
+                <!-- Step 6: Synthetic OCR -->
+                <div class="detail-item" data-index="5">
+                    <span class="tag-small"># VISION_MODELS</span>
+                    <h2>Synthetic <br>OCR Engine.</h2>
+                    <p>Dissects handwritten strokes with sub-pixel fidelity. Handles multi-page layouts and complex
+                        numbering automatically with 99.9% accuracy.</p>
+                </div>
+                <!-- Step 7: Consensus -->
+                <div class="detail-item" data-index="6">
+                    <span class="tag-small"># MULTI_AGENT</span>
+                    <h2>Consensus <br>System.</h2>
+                    <p>Every grade is audited by a secondary agent to eliminate bias and ensure total alignment with
+                        university rubrics and institutional standards.</p>
+                </div>
+                <!-- Step 8: Insights -->
+                <div class="detail-item" data-index="7">
+                    <span class="tag-small"># DATA_STRATEGY</span>
+                    <h2>School-Wide <br>Insights.</h2>
+                    <p>Aggregated skill analytics for entire institutions. Compare performance across departments and
+                        identify systemic growth opportunities.</p>
+                </div>
+            </div>
+
+            <div class="stage-visual">
+                <!-- Visual 1: Growth intelligence -->
+                <div class="visual-content active" data-index="0">
+                    <div style="width: 100%;">
+                        <div class="metric-label">Institutional Growth</div>
+                        <div
+                            style="font-size: 4rem; font-weight: 900; color: #fff; margin: 10px 0; letter-spacing: -2px;">
+                            +12.4%</div>
+                        <div class="neon-graph">
+                            <div class="neon-bar" style="height: 30%;"></div>
+                            <div class="neon-bar" style="height: 50%;"></div>
+                            <div class="neon-bar" style="height: 80%;"></div>
+                            <div class="neon-bar" style="height: 60%;"></div>
+                            <div class="neon-bar accent" style="height: 95%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual 2: Sentence Synthesizer -->
+                <div class="visual-content" data-index="1">
+                    <div style="width: 100%;">
+                        <div class="metric-label" style="color: #34a853;">Explainable AI Analysis</div>
+                        <div
+                            style="margin-top: 30px; font-family: 'Outfit', sans-serif; line-height: 2; color: #fff; font-size: 1.1rem; max-width: 500px;">
+                            <span
+                                style="background: rgba(52, 168, 83, 0.2); border: 1px solid #34a853; padding: 4px 8px; border-radius: 6px;">Correct
+                                identification of tectonic shifts</span>
+                            <br><br>
+                            <span
+                                style="background: rgba(234, 67, 53, 0.2); border: 1px solid #ea4335; padding: 4px 8px; border-radius: 6px;">Failed
+                                to mention 1883 impact factors</span>
+                        </div>
+                        <div class="xai-tag-floating" style="top: 15%; right: 10%; color: #34a853; font-weight: 800;">
+                            +1.5 MARKS</div>
+                        <div class="xai-tag-floating" style="bottom: 20%; left: 5%; color: #ea4335; font-weight: 800;">
+                            -2.0 MARKS</div>
+                    </div>
+                </div>
+
+                <!-- Visual 3: Evaluation Criteria -->
+                <div class="visual-content" data-index="2">
+                    <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="metric-label" style="color: #fbbc05;">Protocol v2.1 Metrics</div>
+                        <div style="margin-top: 20px;">
+                            <div class="metric-label" style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px;">
+                                Conceptual Accuracy</div>
+                            <div class="status-strip">
+                                <div class="status-fill"
+                                    style="width: 85%; background: #34a853; box-shadow: 0 0 20px #34a853;"></div>
+                            </div>
+                            <div class="metric-label" style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px;">
+                                Technical Terminology</div>
+                            <div class="status-strip">
+                                <div class="status-fill"
+                                    style="width: 65%; background: #fbbc05; box-shadow: 0 0 20px #fbbc05;"></div>
+                            </div>
+                            <div class="metric-label" style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px;">
+                                Logical Consistency</div>
+                            <div class="status-strip">
+                                <div class="status-fill"
+                                    style="width: 95%; background: #4285f4; box-shadow: 0 0 20px #4285f4;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual 4: Detailed Feedback -->
+                <div class="visual-content" data-index="3">
+                    <div class="feedback-chat">
+                        <div class="metric-label" style="color: #a142f4;">Personalized Cycle</div>
+                        <div class="chat-bubble chat-oritm">Oritm: Focus on labeling accuracy in the tectonic diagrams
+                            to reach Grade A next batch.</div>
+                        <div class="chat-bubble chat-student">Student: Understood, I'll review the 1883 impact section
+                            for more detail.</div>
+                    </div>
+                </div>
+
+                <!-- Visual 5: Hybrid Gateway -->
+                <div class="visual-content" data-index="4">
+                    <div class="node-network">
+                        <div class="metric-label">Gateway Routing</div>
+                        <div class="network-node" style="top: 20%; left: 10%;"></div>
+                        <div class="network-node"
+                            style="top: 50%; left: 80%; background: #fbbc05; box-shadow: 0 0 15px #fbbc05;"></div>
+                        <div class="network-node" style="top: 80%; left: 40%;"></div>
+                        <div class="network-line" style="top: 22%; left: 12%; width: 280px; transform: rotate(25deg);">
+                        </div>
+                        <div class="network-line" style="top: 82%; left: 42%; width: 200px; transform: rotate(-35deg);">
+                        </div>
+                        <div
+                            style="position: absolute; bottom: 0; left: 0; font-size: 0.6rem; color: #4285f4; opacity: 0.5;">
+                            STATUS: OPTIMIZING LOAD_BALANCE</div>
+                    </div>
+                </div>
+
+                <!-- Visual 6: Synthetic OCR -->
+                <div class="visual-content" data-index="5">
+                    <div class="ocr-scan-container">
+                        <div class="scan-bar"></div>
+                        <div
+                            style="padding: 40px; font-family: 'Outfit', sans-serif; font-style: italic; opacity: 0.3; font-size: 2rem;">
+                            Handwritten strokes <br> being digitized...
+                        </div>
+                        <div style="position: absolute; bottom: 20px; right: 20px; font-size: 0.6rem; color: #34a853;">
+                            FIDELITY: 99.9%</div>
+                    </div>
+                </div>
+
+                <!-- Visual 7: Consensus System -->
+                <div class="visual-content" data-index="6">
+                    <div class="consensus-circle">
+                        <div class="agent-dot" style="top: -20px; left: 80px;">AG_1</div>
+                        <div class="agent-dot" style="bottom: 20px; left: -10px;">AG_2</div>
+                        <div class="agent-dot" style="bottom: 20px; right: -10px;">AG_3</div>
+                        <div
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <i class="fas fa-check-circle"
+                                style="color: #34a853; font-size: 3rem; margin-bottom: 10px;"></i>
+                            <div style="font-size: 0.7rem; color: #fff;">VERIFIED</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual 8: School Insights -->
+                <div class="visual-content" data-index="7">
+                    <div style="text-align: center; width: 100%;">
+                        <div class="metric-label" style="color: #a142f4;">Institutional Alpha</div>
+                        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
+                            <div style="padding: 20px; border: 1px solid rgba(161, 66, 244, 0.3); border-radius: 20px;">
+                                <div style="font-size: 1.5rem; color: #fff;">88%</div>
+                                <div style="font-size: 0.6rem; color: #a142f4;">DEPT_AVG</div>
+                            </div>
+                            <div style="padding: 20px; border: 1px solid rgba(161, 66, 244, 0.3); border-radius: 20px;">
+                                <div style="font-size: 1.5rem; color: #fff;">+15%</div>
+                                <div style="font-size: 0.6rem; color: #a142f4;">SKILL_UP</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Measurable Impact Section -->
+        <section class="impact-section">
+            <!-- 1. Header Logic Text (Centered Top) -->
+            <div class="impact-content">
+                <h2>Measurable impact on <br>institutional evaluation work</h2>
+                <p>Universities use Oritm to eliminate bias, reduce grading friction, and automate institutional
+                    feedback all backed by our active agentic consensus.</p>
+            </div>
+
+            <!-- 2. Centered Mascot w/ Bubbles -->
+            <div class="mascot-wrapper animate">
+                <div class="monkey-agent">
+                    <div class="monkey-ear ear-l"></div>
+                    <div class="monkey-ear ear-r"></div>
+                    <div class="monkey-face">
+                        <div class="monkey-nose"></div>
+                    </div>
+                    <div class="monkey-specs">
+                        <div class="spec-lens">
+                            <div class="eye-pupil"></div>
+                        </div>
+                        <div class="spec-lens">
+                            <div class="eye-pupil"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bubbles -->
+                <div class="floating-msg msg-1">
+                    <div class="msg-icon" style="background: #34a853;"><i class="fas fa-check"></i></div>
+                    Batch 24 Done
+                </div>
+                <div class="floating-msg msg-2">
+                    <div class="msg-icon" style="background: #4285f4;"><i class="fas fa-bullseye"></i></div>
+                    Accuracy: 99.8%
+                </div>
+                <div class="floating-msg msg-3">
+                    <div class="msg-icon" style="background: #fbbc05;"><i class="fas fa-bolt"></i></div>
+                    Bias Check Passed
+                </div>
+                <div class="floating-msg msg-4">
+                    <div class="msg-icon" style="background: #ea4335;"><i class="fas fa-file-alt"></i></div>
+                    Feedback Ready
+                </div>
+                <!-- New Popups -->
+                <div class="floating-msg msg-5">
+                    <div class="msg-icon" style="background: #9334e6;"><i class="fas fa-handshake"></i></div>
+                    Consensus Reached
+                </div>
+                <div class="floating-msg msg-6">
+                    <div class="msg-icon" style="background: #f97316;"><i class="fas fa-list-check"></i></div>
+                    Rubric Applied
+                </div>
+            </div>
+        </section>
+
+        <!-- Data/Stats Cards -->
+        <section class="data-strip">
+            <div class="data-item">
+                <span class="data-val">&darr; 90%</span>
+                <span class="tag-small">Reduced Grading Time</span>
+            </div>
+            <div class="data-item">
+                <span class="data-val">&darr; ~95%</span>
+                <span class="tag-small">Human Bias Eradicated</span>
+            </div>
+            <div class="data-item">
+                <span class="data-val">5-6hrs / day</span>
+                <span class="tag-small">Saved per Instructor</span>
+            </div>
+            <div class="data-item">
+                <span class="data-val">&darr; ~40%</span>
+                <span class="tag-small">Admin Overhead</span>
+            </div>
+        </section>
+
+        <!-- Architecture Section (Live Topology) -->
+        <!-- Architecture Section (Refined Layout) -->
+        <section class="intel-section" style="padding: 40px 24px;">
+            <div class="intel-header" style="margin-bottom: 30px;">
+                <span class="tag-small"># ENTERPRISE_ORCHESTRATION</span>
+                <h2 style="margin-bottom: 10px; font-size: 2.5rem;">Institutional-Grade Architecture.</h2>
+                <p style="margin-bottom: 10px;">Secure agentic orchestration designed for global institutional scale.
+                </p>
+            </div>
+
+            <div class="intel-card" style="min-height: auto; grid-template-columns: 1fr 1fr;">
+                <div class="intel-left"
+                    style="padding: 30px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">Enterprise Foundation</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">A resilient, high-throughput orchestration layer
+                        engineered for mission-critical institutional deployments.</p>
+
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-network-wired" style="color: #a3e635; font-size: 0.8rem;"></i>
+                            <span style="color: #fff; font-weight: 500; font-size: 0.85rem;">Agentic Evaluation
+                                Mesh</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-fingerprint" style="color: #4285f4; font-size: 0.8rem;"></i>
+                            <span style="color: #fff; font-weight: 500; font-size: 0.85rem;">Sovereign Logic
+                                Layer</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-layer-group" style="color: #ea4335; font-size: 0.8rem;"></i>
+                            <span style="color: #fff; font-weight: 500; font-size: 0.85rem;">Institutional Grade
+                                Scale</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intel-right" id="topo-container"
+                    style="padding: 0; background: #050505; border-left: 1px solid rgba(255,255,255,0.05); position: relative; min-height: 380px; overflow: hidden; display: block; border-radius: 0 32px 32px 0;">
+                    <!-- Canvas for calm data flows -->
+                    <canvas id="topo-canvas"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></canvas>
+
+                    <!-- LEFT: Sources -->
+                    <div class="topo-node input-node" id="node-lms" style="top: 30%; left: 8%;">
+                        <div class="node-icon"><i class="fas fa-university"></i></div>
+                        <div class="node-label">LMS<br>Portals</div>
+                    </div>
+                    <div class="topo-node input-node" id="node-assess" style="top: 70%; left: 8%;">
+                        <div class="node-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <div class="node-label">Assessment<br>Systems</div>
+                    </div>
+
+                    <!-- CENTER: Intelligent Core -->
+                    <div class="topo-node core-node" id="node-core"
+                        style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <div class="node-icon core-icon"><i class="fas fa-gears"></i></div>
+                        <div class="node-label" style="text-align: center; color: #fff;">Oritm E I</div>
+                        <div class="core-pulse"></div>
+                    </div>
+
+                    <!-- RIGHT: Destinations (Stacked 4 - Evenly Spaced) -->
+                    <!-- Note: right positioning corresponds to 100% - x% in JS -->
+                    <div class="topo-node output-node" id="node-synth"
+                        style="top: 20%; right: 5%; flex-direction: row-reverse; text-align: right;">
+                        <div class="node-icon small"><i class="fas fa-pen-nib"></i></div>
+                        <div class="node-label">Sentence<br>Synthesizer</div>
+                    </div>
+                    <div class="topo-node output-node" id="node-feedback"
+                        style="top: 40%; right: 5%; flex-direction: row-reverse; text-align: right;">
+                        <div class="node-icon small"><i class="fas fa-comments"></i></div>
+                        <div class="node-label">Detailed<br>Feedback</div>
+                    </div>
+                    <div class="topo-node output-node" id="node-insights"
+                        style="top: 60%; right: 5%; flex-direction: row-reverse; text-align: right;">
+                        <div class="node-icon small"><i class="fas fa-chart-pie"></i></div>
+                        <div class="node-label">Growth<br>Insights</div>
+                    </div>
+                    <div class="topo-node output-node" id="node-audit"
+                        style="top: 80%; right: 5%; flex-direction: row-reverse; text-align: right;">
+                        <div class="node-icon small"><i class="fas fa-file-shield"></i></div>
+                        <div class="node-label">Bloom's<br>Taxonomy</div>
+                    </div>
+
+                    <style>
+                        .topo-node {
+                            position: absolute;
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            z-index: 2;
+                            background: rgba(15, 15, 20, 0.85);
+                            padding: 8px 14px;
+                            border-radius: 12px;
+                            border: 1px solid rgba(255, 255, 255, 0.08);
+                            backdrop-filter: blur(8px);
+                            transform: translateY(-50%);
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+                            transition: border-color 0.4s;
+                            white-space: nowrap;
+                        }
+
+                        .core-node {
+                            flex-direction: column;
+                            padding: 20px 24px;
+                            gap: 10px;
+                            background: rgba(10, 10, 15, 0.95);
+                            border: 1px solid rgba(66, 133, 244, 0.3);
+                        }
+
+                        .node-icon {
+                            width: 32px;
+                            height: 32px;
+                            background: rgba(255, 255, 255, 0.03);
+                            border-radius: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #70757a;
+                            font-size: 0.9rem;
+                            transition: color 0.4s, background 0.4s;
+                        }
+
+                        .node-icon.small {
+                            width: 28px;
+                            height: 28px;
+                            font-size: 0.8rem;
+                        }
+
+                        .core-icon {
+                            width: 44px;
+                            height: 44px;
+                            font-size: 1.2rem;
+                            color: #a3e635;
+                            /* Lime for core */
+                            background: rgba(163, 230, 53, 0.1);
+                            position: relative;
+                            z-index: 2;
+                        }
+
+                        .core-icon i {
+                            animation: rotate-gear 10s infinite linear;
+                        }
+
+                        @keyframes rotate-gear {
+                            from {
+                                transform: rotate(0deg);
+                            }
+
+                            to {
+                                transform: rotate(360deg);
+                            }
+                        }
+
+                        .node-label {
+                            font-family: 'Outfit', sans-serif;
+                            font-size: 0.75rem;
+                            font-weight: 500;
+                            color: #bdc1c6;
+                            line-height: 1.2;
+                        }
+
+                        /* Active Processing State classes */
+                        .topo-node.processing .node-icon {
+                            color: #fff;
+                            background: rgba(255, 255, 255, 0.15);
+                        }
+
+                        .topo-node.processing {
+                            border-color: rgba(255, 255, 255, 0.3);
+                        }
+
+                        .topo-node.processing.output-node {
+                            border-color: rgba(66, 133, 244, 0.4);
+                        }
+
+                        .core-node.active-core {
+                            box-shadow: 0 0 50px rgba(163, 230, 53, 0.1);
+                            border-color: rgba(163, 230, 53, 0.5);
+                        }
+
+                        /* Core Pulse Animation */
+                        .core-pulse {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 12px;
+                            border: 1px solid #a3e635;
+                            opacity: 0;
+                            z-index: 0;
+                            pointer-events: none;
+                        }
+
+                        @keyframes pulse-ring {
+                            0% {
+                                transform: translate(-50%, -50%) scale(0.85);
+                                opacity: 0.6;
+                            }
+
+                            100% {
+                                transform: translate(-50%, -50%) scale(1.35);
+                                opacity: 0;
+                            }
+                        }
+
+                        .core-node.active-core .core-pulse {
+                            animation: pulse-ring 2s infinite;
+                        }
+                    </style>
+
+                    <script>
+                        (function () {
+                            const canvas = document.getElementById('topo-canvas');
+                            const ctx = canvas.getContext('2d');
+                            const container = document.getElementById('topo-container');
+
+                            // Nodes configuration (Matches CSS positioning percentages roughly)
+                            // Note: x is percentage from left, y is percentage from top
+                            const nodes = {
+                                lms: { el: document.getElementById('node-lms'), x: 0.12, y: 0.30 },
+                                assess: { el: document.getElementById('node-assess'), x: 0.12, y: 0.70 },
+                                core: { el: document.getElementById('node-core'), x: 0.50, y: 0.50 },
+                                synth: { el: document.getElementById('node-synth'), x: 0.88, y: 0.20 },
+                                feedback: { el: document.getElementById('node-feedback'), x: 0.88, y: 0.40 },
+                                insights: { el: document.getElementById('node-insights'), x: 0.88, y: 0.60 },
+                                audit: { el: document.getElementById('node-audit'), x: 0.88, y: 0.80 }
+                            };
+
+                            let width, height;
+                            let particles = [];
+
+                            function resize() {
+                                width = container.offsetWidth;
+                                height = container.offsetHeight;
+                                canvas.width = width;
+                                canvas.height = height;
+                            }
+                            new ResizeObserver(resize).observe(container);
+                            setTimeout(resize, 100);
+
+                            // Particle Class
+                            class Particle {
+                                constructor(startNode, endNode, color, speedVal) {
+                                    this.start = startNode;
+                                    this.end = endNode;
+                                    this.progress = 0;
+                                    this.speed = speedVal || 0.012;
+                                    this.color = color;
+                                    this.active = true;
+                                }
+
+                                update() {
+                                    this.progress += this.speed;
+                                    if (this.progress >= 1) {
+                                        this.active = false;
+                                        if (this.end === 'core') triggerCorePulse();
+                                        if (['synth', 'feedback', 'insights', 'audit'].includes(this.end)) triggerOutputFlash(nodes[this.end].el);
+                                    }
+                                }
+
+                                draw(ctx) {
+                                    if (!this.active) return;
+                                    const sx = width * nodes[this.start].x;
+                                    const sy = height * nodes[this.start].y;
+                                    const ex = width * nodes[this.end].x;
+                                    const ey = height * nodes[this.end].y;
+
+                                    const currX = sx + (ex - sx) * this.progress;
+                                    const currY = sy + (ey - sy) * this.progress;
+
+                                    // Main Particle Glow
+                                    ctx.shadowBlur = 10;
+                                    ctx.shadowColor = this.color;
+
+                                    ctx.beginPath();
+                                    ctx.arc(currX, currY, 2.5, 0, Math.PI * 2);
+                                    ctx.fillStyle = this.color;
+                                    ctx.fill();
+
+                                    // Tail with fading based on progress
+                                    const tailLen = 0.15;
+                                    const tailProgress = Math.max(0, this.progress - tailLen);
+                                    const tx = sx + (ex - sx) * tailProgress;
+                                    const ty = sy + (ey - sy) * tailProgress;
+
+                                    ctx.beginPath();
+                                    ctx.moveTo(currX, currY);
+                                    ctx.lineTo(tx, ty);
+                                    ctx.strokeStyle = this.color;
+                                    ctx.lineWidth = 2;
+                                    ctx.globalAlpha = 0.4 * (1 - this.progress);
+                                    ctx.stroke();
+
+                                    ctx.globalAlpha = 1.0;
+                                    ctx.shadowBlur = 0;
+                                }
+                            }
+
+                            // Effects
+                            function triggerCorePulse() {
+                                const core = nodes.core.el;
+                                core.classList.add('active-core');
+                            }
+
+                            function triggerOutputFlash(el) {
+                                el.classList.add('processing');
+                                setTimeout(() => el.classList.remove('processing'), 400);
+                            }
+
+                            function triggerInputFlash(el) {
+                                el.classList.add('processing');
+                                setTimeout(() => el.classList.remove('processing'), 400);
+                            }
+
+                            // Lines drawing
+                            function drawConnections() {
+                                ctx.clearRect(0, 0, width, height);
+
+                                ctx.lineWidth = 1;
+                                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)'; // Subtle lines
+
+                                const cx = width * nodes.core.x;
+                                const cy = height * nodes.core.y;
+
+                                // Inputs -> Core
+                                ['lms', 'assess'].forEach(k => {
+                                    const nx = width * nodes[k].x;
+                                    const ny = height * nodes[k].y;
+                                    ctx.beginPath(); ctx.moveTo(nx, ny); ctx.lineTo(cx, cy); ctx.stroke();
+                                });
+
+                                // Core -> Outputs
+                                ['synth', 'feedback', 'insights', 'audit'].forEach(k => {
+                                    const nx = width * nodes[k].x;
+                                    const ny = height * nodes[k].y;
+                                    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
+                                });
+                            }
+
+                            // Animation Loop
+                            let tick = 0;
+                            function animate() {
+                                drawConnections();
+
+                                tick++;
+                                // Rhythm: Ingest -> Process -> Egest
+
+                                // Phase 1: Ingest (LMS/Assess)
+                                if (tick % 160 === 0) {
+                                    triggerInputFlash(nodes.lms.el);
+                                    particles.push(new Particle('lms', 'core', '#fff'));
+                                }
+                                if (tick % 160 === 20) {
+                                    triggerInputFlash(nodes.assess.el);
+                                    particles.push(new Particle('assess', 'core', '#fff', 0.018));
+                                }
+
+                                // Phase 2: Core Processing (Pulse lasts)
+                                if (tick % 160 === 70) {
+                                    nodes.core.el.classList.remove('active-core'); // Reset before next pulse
+                                }
+
+                                // Phase 3: Blast to Outputs (Randomized)
+                                if (tick % 160 === 80) {
+                                    // Feedback & Synth (Fast)
+                                    particles.push(new Particle('core', 'synth', '#a3e635', 0.025));
+                                    particles.push(new Particle('core', 'feedback', '#a3e635', 0.022));
+                                }
+                                if (tick % 160 === 90) {
+                                    // Insights & Audit (Steady)
+                                    particles.push(new Particle('core', 'insights', '#4285f4', 0.02));
+                                    particles.push(new Particle('core', 'audit', '#34a853', 0.02));
+                                }
+
+                                // Update & Draw
+                                particles = particles.filter(p => p.active);
+                                particles.forEach(p => {
+                                    p.update();
+                                    p.draw(ctx);
+                                });
+
+                                requestAnimationFrame(animate);
+                            }
+                            animate();
+                        })();
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pipeline Workflow -->
+
+
+        <!-- Walkthrough Product Demo Section -->
+
+
+        <!-- Talk to Sales Section -->
+        <section id="contact" style="padding: 40px 24px; max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <span class="tag-small"># TALK_TO_SALES</span>
+                <h2 style="margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -2px; line-height: 1.1;">
+                    Scale Institutional Intelligence <br>with Agentic Evaluation.</h2>
+            </div>
+
+            <div class="sales-card"
+                style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div class="sales-info">
+                    <p style="font-size: 1.25rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 40px;">
+                        Join the elite universities using Oritm to automate complex grading rubrics, eliminate bias, and
+                        deliver high-fidelity student performance signals.
+                    </p>
+                    <div style="display: grid; gap: 24px;">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(138, 180, 248, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 700;">Verified Accuracy</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">0.1% margin of error on
+                                    handwritten
+                                    scripts.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(138, 180, 248, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 700;">Edge Deployment</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">Processes scripts locally on
+                                    your
+                                    servers.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sales-form-container"
+                    style="background: #ffffff; border-radius: 24px; padding: 40px; color: #1a1a1a;">
+                    <form>
+                        <div class="form-group">
+                            <label>Institutional Email</label>
+                            <input type="email" placeholder="dean@university.edu" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Name</label>
+                            <input type="text" placeholder="Dr. Sarah Jenkins" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Protocol</label>
+                            <select>
+                                <option>Department-wide Scaling</option>
+                                <option>Private Cloud Deployment</option>
+                                <option>Standard Pro Plan</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit" style="background: #1a1a1a; color: white;">Initialize
+                            Session</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Privacy & Security Section -->
+        <section style="padding: 120px 24px; background: #000;">
+            <div style="max-width: 1500px; margin: 0 auto;">
+
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                    <!-- Card 1: Local Processing -->
+                    <div
+                        style="background: #000; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 32px 24px; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(66, 133, 244, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-server" style="font-size: 1.25rem; color: #4285f4;"></i>
+                            </div>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #fff;">Local Processing
+                            </h3>
+                        </div>
+                        <p style="color: #bdc1c6; line-height: 1.6; font-size: 0.95rem;">
+                            All student data is processed locally on your infrastructure with strict security controls
+                            in place. No external transmission required.
+                        </p>
+                    </div>
+
+                    <!-- Card 2: Zero Training -->
+                    <div
+                        style="background: #000; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 32px 24px; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(52, 168, 83, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-shield-halved" style="font-size: 1.25rem; color: #34a853;"></i>
+                            </div>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #fff;">Zero Training</h3>
+                        </div>
+                        <p style="color: #bdc1c6; line-height: 1.6; font-size: 0.95rem;">
+                            Your student data & evaluation insights are never used to train models. Not now, not later,
+                            not ever.
+                        </p>
+                    </div>
+
+                    <!-- Card 3: Minimum Access -->
+                    <div
+                        style="background: #000; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 32px 24px; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(251, 188, 5, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-lock" style="font-size: 1.25rem; color: #fbbc05;"></i>
+                            </div>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #fff;">Minimum Access</h3>
+                        </div>
+                        <p style="color: #bdc1c6; line-height: 1.6; font-size: 0.95rem;">
+                            We process only what's required to generate insights. Internal signals remain isolated and
+                            never shared.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <h2>oritm</h2>
+        </section>
+    </main>
+
+    <footer>
+        <a href="#" class="footer-brand">oritm.tech</a>
+        <div class="footer-copyright">
+            &copy; 2026 oritm.tech. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // High-Fidelity Intelligence Surface Logic
+        let currentStage = 0;
+        const totalStages = 8;
+        const intervalTime = 2000; // 2s as requested
+
+        function updateStage() {
+            const detailItems = document.querySelectorAll('.detail-item');
+            const visualContents = document.querySelectorAll('.visual-content');
+
+            // Pulse effect on visuals before swap
+            const currentVisual = visualContents[currentStage];
+            if (currentVisual) currentVisual.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                // Reset all
+                detailItems.forEach(item => item.classList.remove('active'));
+                visualContents.forEach(content => content.classList.remove('active'));
+
+                // Set active
+                detailItems[currentStage].classList.add('active');
+                visualContents[currentStage].classList.add('active');
+                visualContents[currentStage].style.transform = 'scale(1)';
+
+                // Next stage
+                currentStage = (currentStage + 1) % totalStages;
+            }, 300);
+        }
+
+        setInterval(updateStage, intervalTime);
+        updateStage(); // Initial run
+
+        // Product Showcase Tab Logic
+        const tabs = document.querySelectorAll('.surface-tab');
+        const frameImages = document.querySelectorAll('.frame-img');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('mouseenter', () => {
+                const targetId = tab.getAttribute('data-target');
+
+                // Update tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update images
+                frameImages.forEach(img => {
+                    img.classList.remove('active');
+                    if (img.id === targetId) {
+                        img.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href.startsWith('#') && href !== '#') {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(href);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        // Terminal Typing Animation Script (Enhanced)
+        const terminalData = [
+            { text: "INITIALIZING ORITM_CORE_v2...", color: "#9ca3af" },
+            { text: "LOADING AGENT: 'VISION_ENGINE_01'", color: "#d946ef" },
+            { text: "EXECUTING OCR_EXTRACTION...", color: "#e5e7eb" },
+            {
+                text: JSON.stringify({
+                    "status": "complete",
+                    "extracted_text": "The mitochondria is the powerhouse of the cell...",
+                    "handwriting_fidelity": 92
+                }, null, 2),
+                color: "#60a5fa",
+                instant: true
+            },
+            { text: "RUNNING: BIAS_DETECTION_PROTOCOL...", color: "#f472b6" },
+            {
+                text: JSON.stringify({
+                    "bias_detected": false,
+                    "sentiment_audit": "neutral",
+                    "flagged_terms": 0
+                }, null, 2),
+                color: "#f472b6",
+                instant: true
+            },
+            { text: "RUNNING: GRADING_AGENT_CONSENSUS...", color: "#fbbf24" },
+            {
+                text: JSON.stringify({
+                    "grade": "A",
+                    "score": 8.5,
+                    "feedback": "Excellent conceptual clarity. Student identified key biological functions correctly."
+                }, null, 2),
+                color: "#4ade80",
+                instant: true
+            },
+            { text: "FINALIZING: WRITING_TO_LEDGER...", color: "#9ca3af" },
+            { text: "SUCCESS: BATCH_Id_9924 COMMITTED", color: "#27c93f" }
+        ];
+
+        const termBody = document.getElementById('live-terminal');
+        let tLine = 0;
+        let tChar = 0;
+
+        function typeLoop() {
+            if (!termBody) return;
+
+            if (tLine >= terminalData.length) {
+                setTimeout(() => {
+                    tLine = 0;
+                    tChar = 0;
+                    termBody.innerHTML = '';
+                    typeLoop();
+                }, 2000); // 2s pause at end then reset
+                return;
+            }
+
+            const currentData = terminalData[tLine];
+
+            let currentLineDiv = termBody.children[tLine];
+            if (!currentLineDiv) {
+                currentLineDiv = document.createElement('div');
+                currentLineDiv.className = 'term-line';
+                currentLineDiv.style.marginBottom = '8px';
+                currentLineDiv.style.color = currentData.color;
+
+                if (currentData.instant) {
+                    currentLineDiv.style.whiteSpace = 'pre-wrap'; // Preserve JSON format
+                    currentLineDiv.style.fontFamily = "'JetBrains Mono', monospace";
+                } else {
+                    currentLineDiv.innerHTML = '<span style="opacity:0.5; margin-right:8px;">></span>';
+                }
+
+                termBody.appendChild(currentLineDiv);
+            }
+
+            if (currentData.instant) {
+                // Instant Render
+                currentLineDiv.innerText = currentData.text; // Use innerText for newlines
+                termBody.scrollTop = termBody.scrollHeight; // Auto-scroll
+                tLine++;
+                tChar = 0;
+                setTimeout(typeLoop, 1500); // 1.5s read time
+            } else {
+                // Typing Render
+                const fullText = currentData.text;
+                if (tChar < fullText.length) {
+                    if (currentLineDiv) currentLineDiv.innerHTML += fullText.charAt(tChar);
+                    tChar++;
+                    termBody.scrollTop = termBody.scrollHeight; // Auto-scroll
+                    setTimeout(typeLoop, 20 + Math.random() * 30);
+                } else {
+                    tLine++;
+                    tChar = 0;
+                    setTimeout(typeLoop, 400);
+                }
+            }
+        }
+
+        let hasStarted = false;
+        const termObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasStarted) {
+                    hasStarted = true;
+                    if (termBody) {
+                        termBody.innerHTML = '';
+                        typeLoop();
+                    }
+                }
+            });
+        });
+        if (termBody) termObserver.observe(termBody);
+
+        // --- Walkthrough Video Demo Automation (Custom Code Dashboard Edition) ---
+        (function () {
+            const steps = document.querySelectorAll('.walkthrough-step-content');
+            const overlays = {
+                feedback: document.getElementById('overlay-feedback'),
+                blooms: document.getElementById('overlay-blooms'),
+                criteria: document.getElementById('overlay-criteria')
+            };
+            const typingArea = document.getElementById('typing-feedback');
+            const card = document.getElementById('demo-card');
+            const wrap = document.getElementById('demo-wrap');
+            const cursor = document.getElementById('demo-cursor');
+            const ripple = document.getElementById('demo-ripple');
+            const highlight = document.getElementById('demo-highlight');
+            const conclusion = document.getElementById('final-summary');
+            const icons = {
+                pen: document.getElementById('target-pen'),
+                bulb: document.getElementById('target-bulb'),
+                chart: document.getElementById('target-chart'),
+                balance: document.getElementById('target-balance')
+            };
+
+            let currentAction = 0;
+            let isRunning = false;
+
+            const feedbackText = "The student demonstrates a strong grasp of technical concepts. The mention of 'attention mechanism' aligns perfectly with current architectural standards. Suggest focus on 'token mapping' for even higher fidelity.";
+
+            function typeWriter(text, i, cb) {
+                if (i < text.length) {
+                    typingArea.innerHTML += text.charAt(i);
+                    setTimeout(() => typeWriter(text, i + 1, cb), 30);
+                } else if (cb) {
+                    cb();
+                }
+            }
+
+            function triggerRipple(x, y) {
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.style.animation = 'ripple-effect 0.8s ease-out forwards';
+                setTimeout(() => ripple.style.animation = '', 900);
+            }
+
+            function resetViews() {
+                Object.values(overlays).forEach(o => o.classList.remove('active'));
+                icons.bulb.classList.remove('active-bulb');
+                icons.chart.classList.remove('active-chart');
+                icons.balance.classList.remove('active-balance');
+                icons.pen.classList.remove('active-pen');
+                typingArea.innerHTML = '';
+
+                // Reset bars
+                document.querySelectorAll('.cog-bar-fill').forEach(bar => {
+                    bar.style.width = '0%';
+                });
+            }
+
+            function updateWalkthrough() {
+                // Now we have 4 icon actions (Pen, Bulb, Chart, Balance)
+                if (currentAction >= 4) {
+                    // Show Step 5 (Audit) before resetting
+                    steps.forEach((s, idx) => s.classList.toggle('active', idx === 4));
+                    resetViews();
+                    cursor.style.opacity = '0';
+
+                    setTimeout(() => {
+                        currentAction = 0;
+                        updateWalkthrough();
+                    }, 4000);
+                    return;
+                }
+
+                // Sequence: 0: pen, 1: bulb, 2: chart, 3: balance
+                const actionMap = ['pen', 'bulb', 'chart', 'balance'];
+                const targetType = actionMap[currentAction];
+                const targetIcon = icons[targetType];
+                const activeClass = `active-${targetType}`;
+
+                // Position logic based on the actual icon location
+                const rect = targetIcon.getBoundingClientRect();
+                const wrapRect = wrap.getBoundingClientRect();
+
+                const relX = rect.left - wrapRect.left + (rect.width / 2);
+                const relY = rect.top - wrapRect.top + (rect.height / 2);
+
+                // 1. Move Cursor
+                cursor.style.opacity = '1';
+                cursor.style.transform = `translate(${relX}px, ${relY}px)`;
+
+                // Delay text change to match page opening (after cursor interaction)
+                setTimeout(() => {
+                    steps.forEach((s, idx) => s.classList.toggle('active', idx === currentAction));
+                }, 2600);
+
+                // 2. Interaction
+                setTimeout(() => {
+                    cursor.classList.add('clamping');
+                    highlight.style.opacity = '1';
+                    highlight.style.width = '44px';
+                    highlight.style.height = '44px';
+                    highlight.style.left = `${relX - 22}px`;
+                    highlight.style.top = `${relY - 22}px`;
+
+                    triggerRipple(relX, relY);
+
+                    setTimeout(() => {
+                        targetIcon.classList.add(activeClass);
+                        cursor.style.opacity = '0';
+
+                        // Handle specific overlay logic
+                        if (targetType === 'bulb') {
+                            overlays.feedback.classList.add('active');
+                            highlight.style.opacity = '0';
+                            setTimeout(() => {
+                                typeWriter(feedbackText, 0, () => {
+                                    setTimeout(nextStep, 3500);
+                                });
+                            }, 500);
+                        } else if (targetType === 'chart') {
+                            overlays.blooms.classList.add('active');
+                            highlight.style.opacity = '0';
+
+                            // Animate bars
+                            setTimeout(() => {
+                                overlays.blooms.querySelectorAll('.cog-bar-fill').forEach(bar => {
+                                    bar.style.width = bar.getAttribute('data-target');
+                                });
+                            }, 300);
+
+                            setTimeout(nextStep, 3500);
+                        } else if (targetType === 'balance') {
+                            overlays.criteria.classList.add('active');
+                            highlight.style.opacity = '0';
+
+                            // Animate bars
+                            setTimeout(() => {
+                                overlays.criteria.querySelectorAll('.cog-bar-fill').forEach(bar => {
+                                    bar.style.width = bar.getAttribute('data-target');
+                                });
+                            }, 300);
+
+                            setTimeout(nextStep, 4500);
+                        } else {
+                            // Pen action just highlights for a moment
+                            setTimeout(nextStep, 2000);
+                        }
+
+                        function nextStep() {
+                            cursor.classList.remove('clamping');
+                            highlight.style.opacity = '0';
+                            resetViews();
+                            currentAction++;
+                            setTimeout(updateWalkthrough, 1000);
+                        }
+                    }, 600);
+                }, 1800);
+            }
+
+            const walkthroughObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !isRunning) {
+                        isRunning = true;
+                        card.classList.add('visible');
+                        setTimeout(updateWalkthrough, 1000);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            walkthroughObserver.observe(card);
+        })();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleElement = document.getElementById('hero-typed-title');
+            const reveals = document.querySelectorAll('.hero-reveal');
+            const fullText = "Automate the Evaluation. \nIlluminate the Learning Gap.";
+            let index = 0;
+
+            // Add cursor initially
+            titleElement.innerHTML = '<span class="typing-cursor"></span>';
+            const cursor = titleElement.querySelector('.typing-cursor');
+
+            function type() {
+                if (index < fullText.length) {
+                    const char = fullText.charAt(index);
+                    if (char === '\n') {
+                        // Insert line break before the cursor
+                        cursor.insertAdjacentHTML('beforebegin', '<br>');
+                    } else {
+                        // Insert character before the cursor
+                        cursor.insertAdjacentHTML('beforebegin', char);
+                    }
+                    index++;
+                    setTimeout(type, 40); // Fast but readable typing
+                } else {
+                    // Typing finished, remove cursor then reveal subtext and buttons
+                    setTimeout(() => {
+                        cursor.remove();
+                        reveals.forEach(el => el.classList.add('visible'));
+                    }, 400);
+                }
+            }
+
+            // Start typing after a short delay for impact
+            setTimeout(type, 1000);
+        });
+    </script>
+</body>
+
+</html>
