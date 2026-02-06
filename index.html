@@ -2048,6 +2048,134 @@
             .sales-content p {
                 margin: 0 auto 40px;
             }
+
+            /* --- Mobile Responsiveness Fixes --- */
+            .main-header {
+                padding: 0 20px;
+                top: 20px;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 10px;
+                position: fixed;
+            }
+
+            .brand-logo {
+                position: relative !important;
+                left: 0 !important;
+                transform: scale(0.65) rotate(-3deg) !important;
+                transform-origin: left center;
+                margin-bottom: 0;
+            }
+
+            nav {
+                padding: 4px 8px;
+                gap: 2px;
+                width: auto;
+                max-width: 70%;
+                justify-content: flex-end;
+                overflow-x: auto;
+                white-space: nowrap;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-item {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+
+            .nav-item.active {
+                background: var(--text);
+                color: var(--bg);
+            }
+
+            /* Fix dropdowns on mobile */
+            .nav-dropdown:hover .dropdown-content {
+                display: none;
+                /* Hide complex dropdowns on mobile for better UX */
+            }
+
+            .intel-card {
+                grid-template-columns: 1fr;
+            }
+
+            .intel-left {
+                padding: 30px;
+            }
+
+            .intel-right {
+                padding: 20px;
+                height: 400px;
+            }
+
+            .feature-stage {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 60px 20px;
+            }
+
+            .detail-item h2 {
+                font-size: 2.2rem;
+                letter-spacing: -1.5px;
+            }
+
+            .stage-visual {
+                height: 400px;
+            }
+
+            .surface-tabs {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .surface-tab {
+                font-size: 0.8rem;
+            }
+
+            .final-cta h2 {
+                font-size: clamp(3rem, 25vw, 15rem);
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                text-align: center;
+                padding: 40px 20px;
+            }
+
+            .brand-sparkle {
+                display: none;
+            }
+
+            /* Fix Mascot & Other Fixed Widths */
+            .mascot-wrapper {
+                width: 100% !important;
+                max-width: 400px;
+                height: auto !important;
+                aspect-ratio: 1/1;
+                transform: scale(0.9) !important;
+                margin: 0 auto;
+            }
+
+            .node-network,
+            .ocr-scan-container {
+                width: 100% !important;
+                max-width: 300px;
+                height: auto !important;
+                aspect-ratio: 4/3;
+                margin: 0 auto;
+            }
+
+            .consensus-circle {
+                width: 150px !important;
+                height: 150px !important;
+                margin: 0 auto;
+            }
         }
 
         /* --- Animations --- */
@@ -4414,21 +4542,23 @@
         });
 
         // Sales Form Submission Handler
-        document.getElementById('sales-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const form = this;
-            const successMsg = document.getElementById('sales-success');
+        const salesForm = document.getElementById('sales-form');
+        if (salesForm) {
+            salesForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const form = this;
+                const successMsg = document.getElementById('sales-success');
 
-            // Hide form and show success message
-            form.style.display = 'none';
-            successMsg.style.display = 'block';
+                // Hide form and show success message
+                form.style.display = 'none';
+                if (successMsg) successMsg.style.display = 'block';
 
-            // Optional: Log data or handle API call here
-            console.log('Form submitted successfully');
-        });
+                // Optional: Log data or handle API call here
+                console.log('Form submitted successfully');
+            });
+        }
     </script>
 
 </body>
 
 </html>
-
