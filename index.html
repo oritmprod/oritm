@@ -2038,6 +2038,35 @@
             transform: scale(0.99);
         }
 
+        /* Mobile Menu Styles (Default Hidden) */
+        .mobile-menu-touch {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 6000;
+        }
+
+        .touch-bar {
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Menu Active State (X icon) */
+        .mobile-menu-touch.open .touch-bar:first-child {
+            transform: translateY(3.5px) rotate(45deg);
+        }
+
+        .mobile-menu-touch.open .touch-bar:last-child {
+            transform: translateY(-3.5px) rotate(-45deg);
+        }
+
         @media (max-width: 992px) {
 
             /* --- Global Layout Stacking --- */
@@ -2050,81 +2079,124 @@
             .viz-flow-container,
             .data-strip,
             .pipeline-row {
-                grid-template-columns: 1fr !important;
-                display: grid;
+                display: flex !important;
+                flex-direction: column;
                 gap: 40px;
                 padding-left: 16px;
                 padding-right: 16px;
+                width: 100%;
             }
 
-            /* --- Header & Navigation Fixes --- */
+            /* --- Header & Mobile Nav --- */
             .main-header {
-                padding: 10px 16px;
+                padding: 12px 20px;
                 top: 0;
-                background: rgba(0, 0, 0, 0.9) !important;
-                backdrop-filter: blur(15px);
+                background: rgba(0, 0, 0, 0.95) !important;
+                backdrop-filter: blur(20px);
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 justify-content: space-between;
+                align-items: center;
+                height: 70px;
+                z-index: 10000 !important;
+                /* Extremely high to stay above menu */
             }
 
             .brand-logo {
                 position: relative !important;
                 left: 0 !important;
-                transform: scale(0.85) !important;
+                transform: scale(0.9) !important;
                 margin: 0;
                 flex-shrink: 0;
             }
 
+            /* Hide Desktop Header CTA on Mobile (but keep Hero CTA visible) */
+            .main-header .cta-download {
+                display: none !important;
+            }
+
+            .mobile-menu-touch {
+                display: flex !important;
+                /* Force display */
+                z-index: 10001 !important;
+            }
+
             nav {
-                flex: 1;
-                width: auto;
-                max-width: none;
-                /* Critical: allow taking available space */
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100vw;
+                height: 0;
+                background: #000 !important;
+                /* Solid black background */
+                background-color: #000 !important;
+                backdrop-filter: none;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center;
                 justify-content: flex-start;
-                /* Critical: start from 'Home' */
-                overflow-x: auto;
-                padding: 10px 0;
-                margin-left: 10px;
-                background: transparent;
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+                transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 0 !important;
+                /* Remove pill shape */
+                border: none !important;
+                /* Remove any borders */
+                z-index: 9999 !important;
+            }
+
+            nav.mobile-open {
+                height: calc(100vh - 70px);
+                padding-top: 60px;
+                overflow-y: auto;
+                background: #000 !important;
+                /* Double ensure solid black */
+                background-color: #000 !important;
+                border-radius: 0 !important;
+                /* Remove any inherited border radius */
+            }
+
+            /* Overriding specificity for mobile nav items */
+            .main-header nav .nav-item,
+            .main-header nav .nav-item.active,
+            nav .nav-item,
+            nav .nav-item.active {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 24px;
+                font-size: 1.3rem;
+                font-weight: 600;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                background: transparent !important;
+                /* Remove pill bg */
+                margin: 0;
+                border-radius: 0;
+                color: #fff !important;
+            }
+
+            .nav-item:last-child {
                 border: none;
-                -ms-overflow-style: none;
-                /* IE/Edge */
-                scrollbar-width: none;
-                /* Firefox */
-                white-space: nowrap;
             }
 
-            nav::-webkit-scrollbar {
+            .nav-dropdown .dropdown-content {
                 display: none;
-            }
-
-            .nav-item {
-                display: inline-block;
-                padding: 6px 12px;
-                font-size: 0.85rem;
-                background: rgba(255, 255, 255, 0.05);
-                /* Bubble style for better touch targets */
-                border-radius: 100px;
-                margin-right: 8px;
-                flex-shrink: 0;
-            }
-
-            .nav-dropdown:hover .dropdown-content {
-                display: none;
-                /* Disable hover menus */
             }
 
             /* --- Hero Section --- */
             .hero {
-                padding: 120px 20px 60px 20px;
-                height: auto;
+                padding: 140px 20px 60px 20px;
                 min-height: 80vh;
                 text-align: center;
-                align-items: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                z-index: 1;
             }
 
             .hero-content {
-                max-width: 100%;
+                width: 100%;
                 text-align: center !important;
             }
 
@@ -2133,169 +2205,295 @@
                 margin: 0 auto 20px;
             }
 
-            .hero p {
-                margin: 0 auto 30px;
-                font-size: 1.1rem;
-            }
-
             .hero-cta-group {
-                justify-content: center;
-                gap: 16px;
                 flex-direction: column;
                 width: 100%;
+                gap: 16px;
+                display: flex;
             }
 
-            .cta-primary,
-            .cta-secondary {
+            .hero-cta-group a {
                 width: 100%;
+                text-align: center;
                 justify-content: center;
+                display: flex;
+            }
+
+            /* Show CTA buttons in Hero section */
+            .hero .cta-primary,
+            .hero .cta-secondary {
+                display: flex !important;
             }
 
             .cta-download {
                 position: relative;
-                top: auto;
-                right: auto;
                 transform: none;
-                margin-top: 24px;
-                display: flex;
-                justify-content: center;
+                margin-top: 0;
             }
 
-            /* --- Sales Section ("Talk to Sales") --- */
-            .sales-section {
-                padding: 60px 20px;
-                text-align: center;
-                grid-template-columns: 1fr;
+            /* --- ACTION_GRADING_LIVE Section (Vertical Stack) --- */
+            .walkthrough-section {
+                padding: 80px 20px 60px 20px !important;
+                min-height: auto !important;
+                overflow: visible !important;
             }
 
-            .sales-content p {
-                margin: 0 auto 30px;
+            /* Header within walkthrough section */
+            .walkthrough-section .intel-header {
+                margin-bottom: 60px !important;
+                /* Large gap below header */
+                padding: 30px 20px !important;
+                background: rgba(0, 0, 0, 0.8) !important;
+                border-radius: 12px;
+                position: relative;
+                z-index: 100 !important;
+                /* Very high to stay above everything */
             }
 
-            .sales-form-container {
-                width: 100%;
-                padding: 24px;
-                margin: 0 auto;
+            .walkthrough-section .intel-header h2 {
+                font-size: 2.2rem !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 20px !important;
             }
 
-            /* --- Action Grading Live (Feature Stage) --- */
+            /* --- FINAL FIX: RELATIVE STACKING --- */
+
+            /* CRITICAL: Force section container to simple block layout */
+            .walkthrough-section {
+                display: block !important;
+                position: relative !important;
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                padding: 60px 20px !important;
+                background: #000 !important;
+            }
+
+            /* Parent Container */
+            .walkthrough-card {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 40px !important;
+                height: auto !important;
+                max-height: none !important;
+                /* CRITICAL: Remove the desktop max-height */
+                overflow: visible !important;
+                /* CRITICAL: Ensure overflowing content (dashboard) is seen */
+                position: relative !important;
+                padding-bottom: 40px !important;
+                margin-top: 0 !important;
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+
+            /* 1. TEXT SECTION (Top) */
+            #step-info {
+                order: 1 !important;
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                position: relative !important;
+                z-index: 20 !important;
+                margin-bottom: 0 !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            /* CRITICAL: Content must be relative to take up space */
+            .walkthrough-step-content {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                transform: none !important;
+                height: auto !important;
+            }
+
+            .walkthrough-step-content.active {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+
+            /* 2. ANIMATION SECTION (Bottom) */
+            #demo-wrap {
+                order: 2 !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 450px !important;
+                position: relative !important;
+                z-index: 10 !important;
+                margin-top: 20px !important;
+                padding-top: 30px !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+                overflow: visible !important;
+            }
+
+            /* FORCE ALL DASHBOARD CONTENT TO BE RELATIVE/STATIC BY DEFAULT */
+            #demo-wrap * {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                bottom: auto !important;
+                right: auto !important;
+                margin-top: 0 !important;
+                opacity: 1 !important;
+            }
+
+            /* EXCEPTIONS: Animation elements */
+            #demo-wrap #demo-cursor,
+            #demo-wrap #demo-highlight,
+            #demo-wrap #demo-ripple {
+                display: none !important;
+                /* Remove cursor and rings on mobile as requested */
+            }
+
+            #demo-wrap .dash-overlay {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background: rgba(0, 0, 0, 0.95) !important;
+                padding: 20px !important;
+                z-index: 1000 !important;
+                display: none;
+                /* Controlled by .active class in JS */
+            }
+
+            #demo-wrap .dash-overlay.active {
+                display: flex !important;
+                flex-direction: column !important;
+                opacity: 1 !important;
+            }
+
+            /* Cursor/Highlight initial state (JS manages opacity) */
+            #demo-wrap #demo-cursor {
+                width: 32px !important;
+                height: 32px !important;
+                background: transparent !important;
+                opacity: 0;
+            }
+
+            #demo-wrap #demo-highlight {
+                border: 2px solid #4285f4 !important;
+                border-radius: 50% !important;
+                opacity: 0;
+            }
+
+            #demo-wrap #demo-ripple {
+                opacity: 1 !important;
+                /* Managed by keyframe animation */
+            }
+
+            /* Restore basic dashboard styles */
+            #demo-wrap .custom-dashboard {
+                display: block !important;
+                width: 100% !important;
+                height: 100% !important;
+                min-height: 400px !important;
+            }
+
+            #demo-wrap .dash-body {
+                display: block !important;
+                height: auto !important;
+            }
+
+            #demo-wrap .dash-panel-q,
+            #demo-wrap .dash-panel-a {
+                display: block !important;
+                padding: 15px !important;
+                background: rgba(255, 255, 255, 0.03) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                margin-bottom: 15px !important;
+                width: 100% !important;
+            }
+
+            #demo-wrap .dash-header {
+                margin-bottom: 20px !important;
+                padding: 10px 0 !important;
+            }
+
+
+            /* --- ACTION_GRADING_LIVE (Feature Stage) Fix --- */
             .feature-stage {
-                padding: 60px 16px;
+                padding: 60px 20px !important;
             }
 
             .stage-details {
-                text-align: center;
                 order: 1;
-                /* Show text above visual on mobile */
+                text-align: center;
+                margin-bottom: 0;
             }
 
             .detail-item h2 {
                 font-size: 2rem;
+                line-height: 1.1;
+                margin-bottom: 16px;
+            }
+
+            .detail-item p {
+                font-size: 1.05rem;
+                color: #b0b0b0;
             }
 
             .stage-visual {
                 order: 2;
                 width: 100%;
-                height: 380px;
-                /* Ensure sufficient height for visuals */
+                height: 400px;
                 margin-top: 20px;
+                border-radius: 20px;
+                overflow: hidden;
             }
 
-            /* Visual Elements Scaling */
+            /* --- Sales Section --- */
+            .sales-section {
+                text-align: center;
+                margin-top: 60px;
+            }
+
+            /* --- Scaled Visuals --- */
             .node-network,
             .ocr-scan-container,
             .consensus-circle {
+                transform: scale(0.9);
+                margin: 0 auto;
                 width: 100% !important;
                 max-width: 320px;
-                height: auto !important;
-                aspect-ratio: 1/0.8;
-                margin: 0 auto;
-                transform: scale(0.9);
-            }
-
-            /* --- Walkthrough Demo Section --- */
-            .walkthrough-card {
-                grid-template-columns: 1fr;
-                width: auto;
-                margin: 0 16px;
-                min-height: auto;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-
-            .walkthrough-left {
-                padding: 30px 20px;
-                order: 1;
-            }
-
-            .walkthrough-left h3 {
-                font-size: 1.8rem;
-            }
-
-            .walkthrough-right {
-                height: 400px;
-                /* Fixed height for dashboard */
-                order: 2;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .walkthrough-step-content {
-                position: relative;
-                top: 0;
-                left: 0;
-                padding: 0;
-            }
-
-            /* --- Intel Topology --- */
-            .intel-right {
-                height: 400px;
-                border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 0 0 32px 32px;
-            }
-
-            /* --- Footer --- */
-            footer {
-                flex-direction: column;
-                gap: 24px;
-                text-align: center;
-                padding: 40px 20px;
-            }
-
-            .brand-sparkle {
-                display: none;
             }
 
             .mascot-wrapper {
-                transform: scale(0.8);
-                margin: 0 auto 30px;
+                transform: scale(0.85);
             }
 
             .final-cta h2 {
                 font-size: 18vw;
             }
 
-            /* Hide non-essential desktop decorations */
+            footer {
+                text-align: center;
+            }
+
             .flow-lines-bg {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
-            .data-strip {
-                grid-template-columns: 1fr;
-            }
-
             .hero h1 {
                 font-size: 2.2rem;
             }
 
-            .main-header {
-                padding: 10px 16px;
-            }
-
-            nav {
-                max-width: 50%;
+            .data-strip {
+                grid-template-columns: 1fr;
             }
 
             .stage-visual {
@@ -2932,6 +3130,12 @@
                 oritm
             </div>
         </a>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-touch" aria-label="Menu" onclick="toggleMobileMenu()">
+            <div class="touch-bar"></div>
+            <div class="touch-bar"></div>
+        </button>
 
         <nav>
             <a href="index.html" class="nav-item active">Home</a>
@@ -4348,6 +4552,31 @@
         });
     </script>
     <script>
+        // Mobile Menu Toggle Logic
+        function toggleMobileMenu() {
+            const nav = document.querySelector('nav');
+            const btn = document.querySelector('.mobile-menu-touch');
+            nav.classList.toggle('mobile-open');
+            btn.classList.toggle('open');
+
+            // Prevent body scroll when menu is open
+            if (nav.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const nav = document.querySelector('nav');
+                if (nav.classList.contains('mobile-open')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
         // Terminal Typing Animation Script (Enhanced)
         const terminalData = [
             { text: "INITIALIZING ORITM_CORE_v2...", color: "#9ca3af" },
@@ -4682,6 +4911,33 @@
                 console.log('Form submitted successfully');
             });
         }
+
+        // Mobile Menu Toggle Function
+        function toggleMobileMenu() {
+            const nav = document.querySelector('nav');
+            const btn = document.querySelector('.mobile-menu-touch');
+            const body = document.body;
+
+            nav.classList.toggle('mobile-open');
+            btn.classList.toggle('open');
+
+            // Prevent body scroll when menu is open
+            if (nav.classList.contains('mobile-open')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        }
+
+        // Close menu when clicking on a nav item
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const nav = document.querySelector('nav');
+                if (nav.classList.contains('mobile-open')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
     </script>
 
 </body>
